@@ -115,6 +115,12 @@ func (m *ContainerManagerImpl) InspectContainer(ctx context.Context, containerID
 	}, nil
 }
 
+// ValidateNetwork checks if a network exists
+func (m *ContainerManagerImpl) ValidateNetwork(ctx context.Context, networkName string) error {
+	_, err := m.client.cli.NetworkInspect(ctx, networkName, network.InspectOptions{})
+	return err
+}
+
 // GetLogs retrieves container logs
 func (m *ContainerManagerImpl) GetLogs(ctx context.Context, containerID string, opts *domainDocker.LogOptions) (io.ReadCloser, error) {
 	options := container.LogsOptions{

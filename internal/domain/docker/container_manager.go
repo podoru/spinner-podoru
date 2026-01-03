@@ -48,6 +48,9 @@ type ContainerManager interface {
 	RemoveContainer(ctx context.Context, containerID string, force bool) error
 	InspectContainer(ctx context.Context, containerID string) (*ContainerInfo, error)
 
+	// Network operations
+	ValidateNetwork(ctx context.Context, networkName string) error
+
 	// Logs
 	GetLogs(ctx context.Context, containerID string, opts *LogOptions) (io.ReadCloser, error)
 }

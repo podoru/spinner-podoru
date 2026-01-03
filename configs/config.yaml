@@ -3,7 +3,7 @@ app:
   env: development
   port: 8080
   debug: true
-  registration_enabled: false
+  registration_enabled: true
 
 database:
   host: localhost

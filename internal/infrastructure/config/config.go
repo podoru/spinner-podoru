@@ -112,10 +112,12 @@ func bindEnvVariables() {
 
 	viper.BindEnv("docker.host", "DOCKER_HOST")
 
+	viper.BindEnv("traefik.enabled", "TRAEFIK_ENABLED")
 	viper.BindEnv("traefik.dashboard_port", "TRAEFIK_DASHBOARD_PORT")
 	viper.BindEnv("traefik.http_port", "TRAEFIK_HTTP_PORT")
 	viper.BindEnv("traefik.https_port", "TRAEFIK_HTTPS_PORT")
 	viper.BindEnv("traefik.acme_email", "TRAEFIK_ACME_EMAIL")
+	viper.BindEnv("traefik.network", "TRAEFIK_NETWORK")
 }
 
 func setDefaults(cfg *Config) {
@@ -145,6 +147,9 @@ func setDefaults(cfg *Config) {
 	}
 	if cfg.Logger.Format == "" {
 		cfg.Logger.Format = "json"
+	}
+	if cfg.Traefik.Network == "" {
+		cfg.Traefik.Network = "podoru_traefik"
 	}
 }
 

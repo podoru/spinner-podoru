@@ -565,6 +565,10 @@ ENCRYPTION_KEY=
 # Format: username:password_hash
 TRAEFIK_DASHBOARD_AUTH=
 
+# Traefik Settings
+TRAEFIK_ENABLED=true
+TRAEFIK_NETWORK=podoru_traefik
+
 # Application Settings
 REGISTRATION_ENABLED=false
 
@@ -665,46 +669,47 @@ create_superadmin() {
     local max_attempts=10
     local attempt=1
 
-    # Prepare JSON payload
-    local payload=$(cat <<EOF
-{
-    "email": "${SUPERADMIN_EMAIL}",
-    "password": "${SUPERADMIN_PASS}",
-    "name": "${SUPERADMIN_NAME}"
-}
-EOF
-)
+    # Prepare JSON payload (escape quotes for docker exec)
+    local payload="{\"email\":\"${SUPERADMIN_EMAIL}\",\"password\":\"${SUPERADMIN_PASS}\",\"name\":\"${SUPERADMIN_NAME}\"}"
+
+    cd "$PROJECT_DIR"
 
     while [[ $attempt -le $max_attempts ]]; do
-        # Make the API request
-        local response=$(curl -s -w "\n%{http_code}" -X POST "$api_url" \
-            -H "Content-Type: application/json" \
-            -d "$payload" 2>/dev/null)
+        # Make the API request via docker exec (since app isn't exposed on host)
+        local response=$(docker compose -f docker-compose.prod.yml exec -T podoru \
+            wget -q -O - --header="Content-Type: application/json" \
+            --post-data="$payload" "$api_url" 2>&1) || true
 
-        local http_code=$(echo "$response" | tail -n1)
-        local body=$(echo "$response" | sed '$d')
-
-        if [[ "$http_code" == "201" ]]; then
+        # Check response for success indicators
+        if echo "$response" | grep -q '"success":true'; then
             print_success "Superadmin account created successfully"
             # Clear sensitive data
             unset SUPERADMIN_PASS
             return 0
-        elif [[ "$http_code" == "409" ]]; then
+        elif echo "$response" | grep -q 'already exists\|CONFLICT\|409'; then
             print_warning "User already exists (may be from previous installation)"
             return 0
-        elif [[ "$http_code" == "000" ]]; then
-            # Connection refused, API not ready yet
+        elif echo "$response" | grep -q 'Connection refused\|no route\|Unable to connect'; then
+            # API not ready yet
             echo -n "."
             sleep 2
             ((attempt++))
         else
-            print_error "Failed to create superadmin (HTTP $http_code)"
-            echo "$body"
-            return 1
+            # Some other response - might be an error or might be success
+            if [[ -n "$response" ]]; then
+                echo "$response"
+            fi
+            echo -n "."
+            sleep 2
+            ((attempt++))
         fi
     done
 
     print_error "API not responding after $max_attempts attempts"
+    echo "You can create the superadmin manually after startup:"
+    echo "  curl -X POST https://\$DOMAIN/api/v1/auth/register \\"
+    echo "    -H 'Content-Type: application/json' \\"
+    echo "    -d '{\"email\":\"...\",\"password\":\"...\",\"name\":\"...\"}'"
     return 1
 }
 

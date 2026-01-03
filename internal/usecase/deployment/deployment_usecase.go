@@ -157,6 +157,12 @@ func (uc *UseCase) executeDeployment(ctx context.Context, service *entity.Servic
 	var networkID string
 	if uc.traefikConfig != nil && uc.traefikConfig.Enabled && len(domains) > 0 {
 		networkID = uc.traefikConfig.Network
+
+		// Validate network exists before deployment
+		if err := uc.containerManager.ValidateNetwork(ctx, networkID); err != nil {
+			deployErr = fmt.Errorf("traefik network '%s' not found - ensure Traefik is running: %w", networkID, err)
+			return
+		}
 	}
 
 	config := &domainDocker.ContainerConfig{

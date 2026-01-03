@@ -63,6 +63,8 @@ services:
       - DB_NAME=podoru
       - DB_SSL_MODE=disable
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - TRAEFIK_ENABLED=true
+      - TRAEFIK_NETWORK=podoru_traefik
     ports:
       - "8080:8080"
     volumes:
