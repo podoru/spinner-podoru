@@ -112,15 +112,26 @@ check_docker_compose() {
 
     if docker compose version &> /dev/null; then
         COMPOSE_VERSION=$(docker compose version --short 2>/dev/null)
+        COMPOSE_CMD="docker compose"
         print_success "Docker Compose version: $COMPOSE_VERSION"
         return 0
     elif command -v docker-compose &> /dev/null; then
         COMPOSE_VERSION=$(docker-compose version --short 2>/dev/null)
-        print_success "Docker Compose version: $COMPOSE_VERSION"
+        COMPOSE_CMD="docker-compose"
+        print_success "Docker Compose version: $COMPOSE_VERSION (legacy)"
         return 0
     else
         print_error "Docker Compose is not installed"
         return 1
+    fi
+}
+
+# Detect compose command
+detect_compose_cmd() {
+    if docker compose version &> /dev/null; then
+        echo "docker compose"
+    else
+        echo "docker-compose"
     fi
 }
 
@@ -275,6 +286,8 @@ start_database() {
 
     cd "$PROJECT_DIR"
 
+    local compose_cmd=$(detect_compose_cmd)
+
     # Check if postgres container is already running
     if docker ps --format '{{.Names}}' | grep -q 'podoru_postgres'; then
         print_success "PostgreSQL is already running"
@@ -282,7 +295,7 @@ start_database() {
     fi
 
     # Start only postgres service
-    docker compose up -d postgres
+    $compose_cmd up -d postgres
 
     # Wait for postgres to be ready
     print_info "Waiting for PostgreSQL to be ready..."
@@ -290,7 +303,7 @@ start_database() {
     local attempt=1
 
     while [[ $attempt -le $max_attempts ]]; do
-        if docker compose exec -T postgres pg_isready -U podoru -d podoru &> /dev/null; then
+        if $compose_cmd exec -T postgres pg_isready -U podoru -d podoru &> /dev/null; then
             echo ""
             print_success "PostgreSQL is ready"
             return 0
@@ -505,8 +518,10 @@ run_reset() {
 
     cd "$PROJECT_DIR"
 
+    local compose_cmd=$(detect_compose_cmd)
+
     print_info "Stopping Docker services..."
-    docker compose down -v 2>/dev/null || true
+    $compose_cmd down -v 2>/dev/null || true
 
     print_info "Removing .env file..."
     rm -f .env
