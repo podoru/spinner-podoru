@@ -6,6 +6,8 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # Configuration
@@ -42,6 +44,10 @@ print_error() {
 
 print_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
+}
+
+print_step() {
+    echo -e "\n${CYAN}${BOLD}>> $1${NC}\n"
 }
 
 #######################################
@@ -210,10 +216,7 @@ check_env_file() {
     local env_file="$PROJECT_DIR/.env.prod"
 
     if [[ ! -f "$env_file" ]]; then
-        print_warning ".env.prod not found"
-        echo "  Creating from template..."
-        create_env_template
-        print_info "Please edit $env_file with your configuration"
+        print_warning ".env.prod not found (will be created during setup)"
         return 1
     fi
 
@@ -237,6 +240,182 @@ check_env_file() {
     fi
 
     print_success "Environment configuration is valid"
+    return 0
+}
+
+check_htpasswd() {
+    if command -v htpasswd &> /dev/null; then
+        return 0
+    elif command -v openssl &> /dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#######################################
+# Interactive Setup Wizard
+#######################################
+run_setup_wizard() {
+    print_header "Podoru Setup Wizard"
+
+    local env_file="$PROJECT_DIR/.env.prod"
+
+    echo -e "${CYAN}This wizard will help you configure Podoru for production.${NC}"
+    echo -e "${CYAN}Press Enter to accept default values shown in [brackets].${NC}"
+    echo ""
+
+    # Domain
+    print_step "Step 1/5: Domain Configuration"
+    echo "Enter the domain where Podoru will be accessible."
+    echo "Example: podoru.example.com, panel.myserver.com"
+    echo ""
+    while true; do
+        read -p "Domain: " INPUT_DOMAIN
+        if [[ -z "$INPUT_DOMAIN" ]]; then
+            print_error "Domain is required"
+        elif [[ ! "$INPUT_DOMAIN" =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$ ]]; then
+            print_error "Invalid domain format"
+        else
+            break
+        fi
+    done
+
+    # Email for SSL
+    print_step "Step 2/5: SSL Certificate Email"
+    echo "Enter your email for Let's Encrypt SSL certificates."
+    echo "You'll receive expiration notices at this address."
+    echo ""
+    while true; do
+        read -p "Email: " INPUT_EMAIL
+        if [[ -z "$INPUT_EMAIL" ]]; then
+            print_error "Email is required"
+        elif [[ ! "$INPUT_EMAIL" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+            print_error "Invalid email format"
+        else
+            break
+        fi
+    done
+
+    # Admin password for Traefik dashboard
+    print_step "Step 3/5: Traefik Dashboard Credentials"
+    echo "Set up credentials for the Traefik dashboard."
+    echo "Dashboard URL: https://traefik.${INPUT_DOMAIN}/dashboard/"
+    echo ""
+    read -p "Admin username [admin]: " INPUT_ADMIN_USER
+    INPUT_ADMIN_USER=${INPUT_ADMIN_USER:-admin}
+
+    while true; do
+        read -s -p "Admin password: " INPUT_ADMIN_PASS
+        echo ""
+        if [[ -z "$INPUT_ADMIN_PASS" ]]; then
+            print_error "Password is required"
+        elif [[ ${#INPUT_ADMIN_PASS} -lt 8 ]]; then
+            print_error "Password must be at least 8 characters"
+        else
+            read -s -p "Confirm password: " INPUT_ADMIN_PASS_CONFIRM
+            echo ""
+            if [[ "$INPUT_ADMIN_PASS" != "$INPUT_ADMIN_PASS_CONFIRM" ]]; then
+                print_error "Passwords do not match"
+            else
+                break
+            fi
+        fi
+    done
+
+    # Generate htpasswd
+    if command -v htpasswd &> /dev/null; then
+        TRAEFIK_AUTH=$(htpasswd -nb "$INPUT_ADMIN_USER" "$INPUT_ADMIN_PASS")
+    else
+        # Fallback using openssl
+        TRAEFIK_AUTH="${INPUT_ADMIN_USER}:$(openssl passwd -apr1 "$INPUT_ADMIN_PASS")"
+    fi
+
+    # Database settings
+    print_step "Step 4/5: Database Configuration"
+    echo "Configure PostgreSQL database settings."
+    echo ""
+    read -p "Database user [podoru]: " INPUT_DB_USER
+    INPUT_DB_USER=${INPUT_DB_USER:-podoru}
+
+    read -p "Database name [podoru]: " INPUT_DB_NAME
+    INPUT_DB_NAME=${INPUT_DB_NAME:-podoru}
+
+    # Application settings
+    print_step "Step 5/5: Application Settings"
+    echo "Configure application settings."
+    echo ""
+    echo "Enable user registration? (First user becomes superadmin)"
+    read -p "Enable registration [y/N]: " INPUT_REGISTRATION
+    if [[ "$INPUT_REGISTRATION" =~ ^[Yy]$ ]]; then
+        REGISTRATION_ENABLED="true"
+    else
+        REGISTRATION_ENABLED="false"
+    fi
+
+    # Generate secrets
+    print_step "Generating Secure Secrets"
+    local db_password=$(openssl rand -base64 24 | tr -dc 'a-zA-Z0-9' | head -c 24)
+    local jwt_secret=$(openssl rand -base64 32)
+    local encryption_key=$(openssl rand -base64 24 | head -c 32)
+
+    print_success "Database password generated"
+    print_success "JWT secret generated"
+    print_success "Encryption key generated"
+
+    # Write .env.prod file
+    print_step "Creating Configuration File"
+
+    cat > "$env_file" << EOF
+# ===========================================
+# Podoru Production Configuration
+# Generated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+# ===========================================
+
+# Domain Configuration
+DOMAIN=${INPUT_DOMAIN}
+ACME_EMAIL=${INPUT_EMAIL}
+TRAEFIK_DOMAIN=traefik.${INPUT_DOMAIN}
+
+# Database Configuration
+DB_USER=${INPUT_DB_USER}
+DB_PASSWORD=${db_password}
+DB_NAME=${INPUT_DB_NAME}
+
+# JWT Configuration
+JWT_SECRET=${jwt_secret}
+JWT_ACCESS_EXPIRY=15m
+JWT_REFRESH_EXPIRY=7d
+
+# Encryption Key (32 characters for AES-256)
+ENCRYPTION_KEY=${encryption_key}
+
+# Traefik Dashboard Auth
+TRAEFIK_DASHBOARD_AUTH=${TRAEFIK_AUTH}
+
+# Application Settings
+REGISTRATION_ENABLED=${REGISTRATION_ENABLED}
+
+# Docker Image (optional)
+# PODORU_IMAGE=podoru:latest
+EOF
+
+    chmod 600 "$env_file"
+    print_success "Configuration saved to .env.prod"
+
+    # Summary
+    print_header "Configuration Summary"
+    echo -e "  Domain:              ${GREEN}${INPUT_DOMAIN}${NC}"
+    echo -e "  SSL Email:           ${GREEN}${INPUT_EMAIL}${NC}"
+    echo -e "  Traefik Dashboard:   ${GREEN}https://traefik.${INPUT_DOMAIN}/dashboard/${NC}"
+    echo -e "  Dashboard User:      ${GREEN}${INPUT_ADMIN_USER}${NC}"
+    echo -e "  Database User:       ${GREEN}${INPUT_DB_USER}${NC}"
+    echo -e "  Database Name:       ${GREEN}${INPUT_DB_NAME}${NC}"
+    echo -e "  Registration:        ${GREEN}${REGISTRATION_ENABLED}${NC}"
+    echo ""
+    echo -e "  ${YELLOW}Secrets have been auto-generated and saved to .env.prod${NC}"
+    echo ""
+
     return 0
 }
 
@@ -334,7 +513,7 @@ build_app() {
     print_info "Building Podoru application..."
 
     cd "$PROJECT_DIR"
-    docker compose -f docker-compose.prod.yml build
+    docker compose -f docker-compose.prod.yml --env-file .env.prod build
 
     print_success "Application built"
 }
@@ -383,15 +562,20 @@ show_status() {
     docker compose -f docker-compose.prod.yml ps
 
     echo ""
-    echo "Access Points:"
-    echo "  - Application:       https://$DOMAIN"
-    echo "  - API Documentation: https://$DOMAIN/api/v1/docs"
-    echo "  - Traefik Dashboard: https://${TRAEFIK_DOMAIN:-traefik.$DOMAIN}/dashboard/"
+    echo -e "${GREEN}${BOLD}Access Points:${NC}"
+    echo -e "  Application:       ${CYAN}https://$DOMAIN${NC}"
+    echo -e "  API Documentation: ${CYAN}https://$DOMAIN/api/v1/docs${NC}"
+    echo -e "  Traefik Dashboard: ${CYAN}https://${TRAEFIK_DOMAIN:-traefik.$DOMAIN}/dashboard/${NC}"
     echo ""
-    echo "Useful Commands:"
-    echo "  - View logs:     make prod-logs"
-    echo "  - Stop services: make prod-down"
-    echo "  - Backup DB:     make prod-backup"
+    echo -e "${GREEN}${BOLD}Next Steps:${NC}"
+    echo "  1. Point your domain DNS to this server's IP address"
+    echo "  2. Wait for DNS propagation (may take a few minutes)"
+    echo "  3. Access https://$DOMAIN to register the first user (becomes superadmin)"
+    echo ""
+    echo -e "${GREEN}${BOLD}Useful Commands:${NC}"
+    echo "  View logs:     make prod-logs"
+    echo "  Stop services: make prod-down"
+    echo "  Backup DB:     make prod-backup"
     echo ""
 }
 
@@ -401,6 +585,40 @@ show_status() {
 run_checks() {
     print_header "Pre-flight Checks"
 
+    local failed=0
+    local env_missing=0
+
+    check_root
+    check_os
+
+    check_docker || ((failed++))
+    check_docker_compose || ((failed++))
+    check_docker_socket || ((failed++))
+    check_ports || ((failed++))
+    check_memory || ((failed++))
+    check_disk || ((failed++))
+    check_env_file || env_missing=1
+
+    echo ""
+    if [[ $failed -gt 0 ]]; then
+        print_error "$failed check(s) failed"
+        return 1
+    elif [[ $env_missing -eq 1 ]]; then
+        print_warning "Environment not configured (run setup wizard during install)"
+        return 2
+    else
+        print_success "All pre-flight checks passed"
+        return 0
+    fi
+}
+
+run_install() {
+    print_header "Podoru Production Installation"
+
+    local env_file="$PROJECT_DIR/.env.prod"
+
+    # Run system checks first (excluding env file)
+    print_step "Running System Checks"
     local failed=0
 
     check_root
@@ -412,36 +630,42 @@ run_checks() {
     check_ports || ((failed++))
     check_memory || ((failed++))
     check_disk || ((failed++))
-    check_env_file || ((failed++))
 
-    echo ""
     if [[ $failed -gt 0 ]]; then
-        print_error "$failed check(s) failed"
-        return 1
-    else
-        print_success "All pre-flight checks passed"
-        return 0
-    fi
-}
-
-run_install() {
-    print_header "Podoru Production Installation"
-
-    # Run checks first
-    if ! run_checks; then
-        print_error "Pre-flight checks failed. Fix the issues and try again."
+        echo ""
+        print_error "System checks failed. Fix the issues above and try again."
         exit 1
     fi
 
     echo ""
-    read -p "Proceed with installation? [y/N] " -n 1 -r
-    echo ""
+    print_success "System checks passed"
 
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    # Check if .env.prod exists and is valid
+    if [[ -f "$env_file" ]]; then
+        source "$env_file"
+        if [[ -n "$DOMAIN" && -n "$DB_PASSWORD" && -n "$JWT_SECRET" ]]; then
+            print_info "Existing configuration found for: $DOMAIN"
+            read -p "Use existing configuration? [Y/n]: " use_existing
+            if [[ "$use_existing" =~ ^[Nn]$ ]]; then
+                run_setup_wizard
+            fi
+        else
+            run_setup_wizard
+        fi
+    else
+        run_setup_wizard
+    fi
+
+    # Final confirmation
+    echo ""
+    read -p "Proceed with installation? [Y/n]: " confirm
+    if [[ "$confirm" =~ ^[Nn]$ ]]; then
         print_info "Installation cancelled"
         exit 0
     fi
 
+    # Run installation
+    print_step "Installing Podoru"
     create_directories
     pull_images
     build_app
@@ -460,6 +684,9 @@ case "${1:-}" in
     install)
         run_install
         ;;
+    setup)
+        run_setup_wizard
+        ;;
     secrets)
         generate_secrets
         ;;
@@ -467,15 +694,16 @@ case "${1:-}" in
         create_env_template
         ;;
     *)
-        echo "Podoru Installation Script"
+        echo -e "${BLUE}${BOLD}Podoru Installation Script${NC}"
         echo ""
         echo "Usage: $0 <command>"
         echo ""
         echo "Commands:"
         echo "  check    Run pre-flight checks only"
-        echo "  install  Run full installation"
+        echo "  install  Run full installation (interactive)"
+        echo "  setup    Run setup wizard only (create .env.prod)"
         echo "  secrets  Generate secure secrets"
-        echo "  env      Create .env.prod template"
+        echo "  env      Create .env.prod template (non-interactive)"
         echo ""
         exit 1
         ;;

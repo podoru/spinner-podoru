@@ -1,5 +1,5 @@
 .PHONY: build run dev test clean lint migrate-up migrate-down docker-up docker-down docs help \
-	prod-check prod-install prod-up prod-down prod-logs prod-restart prod-backup prod-update prod-secrets
+	prod-check prod-install prod-setup prod-up prod-down prod-logs prod-restart prod-backup prod-update prod-secrets
 
 BINARY_NAME=podoru
 BUILD_DIR=bin
@@ -178,10 +178,15 @@ prod-secrets:
 	@chmod +x scripts/install.sh
 	@./scripts/install.sh secrets
 
-## prod-env: Create .env.prod template file
+## prod-env: Create .env.prod template file (non-interactive)
 prod-env:
 	@chmod +x scripts/install.sh
 	@./scripts/install.sh env
+
+## prod-setup: Run interactive setup wizard
+prod-setup:
+	@chmod +x scripts/install.sh
+	@./scripts/install.sh setup
 
 ## prod-up: Start production services
 prod-up:
