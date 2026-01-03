@@ -126,3 +126,39 @@ func ToServicesResponse(services []entity.Service) []ServiceResponse {
 	}
 	return responses
 }
+
+// DomainResponse represents domain data in API responses
+type DomainResponse struct {
+	ID         uuid.UUID `json:"id" example:"550e8400-e29b-41d4-a716-446655440000"`
+	ServiceID  uuid.UUID `json:"service_id" example:"550e8400-e29b-41d4-a716-446655440001"`
+	Domain     string    `json:"domain" example:"api.example.com"`
+	SSLEnabled bool      `json:"ssl_enabled" example:"true"`
+	SSLAuto    bool      `json:"ssl_auto" example:"true"`
+	CreatedAt  time.Time `json:"created_at" example:"2024-01-15T10:30:00Z"`
+}
+
+// CreateDomainRequest represents the domain creation payload
+type CreateDomainRequest struct {
+	Domain     string `json:"domain" validate:"required,fqdn,max=255" example:"api.example.com"`
+	SSLEnabled *bool  `json:"ssl_enabled,omitempty" example:"true"`
+	SSLAuto    *bool  `json:"ssl_auto,omitempty" example:"true"`
+}
+
+func ToDomainResponse(domain *entity.Domain) DomainResponse {
+	return DomainResponse{
+		ID:         domain.ID,
+		ServiceID:  domain.ServiceID,
+		Domain:     domain.Domain,
+		SSLEnabled: domain.SSLEnabled,
+		SSLAuto:    domain.SSLAuto,
+		CreatedAt:  domain.CreatedAt,
+	}
+}
+
+func ToDomainsResponse(domains []entity.Domain) []DomainResponse {
+	responses := make([]DomainResponse, len(domains))
+	for i, d := range domains {
+		responses[i] = ToDomainResponse(&d)
+	}
+	return responses
+}

@@ -36,8 +36,10 @@ import (
 	"github.com/podoru/spinner-podoru/internal/adapter/repository/postgres"
 	"github.com/podoru/spinner-podoru/internal/infrastructure/config"
 	"github.com/podoru/spinner-podoru/internal/infrastructure/database"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/docker"
 	"github.com/podoru/spinner-podoru/internal/infrastructure/logger"
 	"github.com/podoru/spinner-podoru/internal/usecase/auth"
+	"github.com/podoru/spinner-podoru/internal/usecase/deployment"
 	"github.com/podoru/spinner-podoru/internal/usecase/project"
 	"github.com/podoru/spinner-podoru/internal/usecase/service"
 	"github.com/podoru/spinner-podoru/internal/usecase/team"
@@ -101,25 +103,43 @@ func main() {
 		log.Fatalf("Failed to create validator: %v", err)
 	}
 
+	// Initialize Docker client
+	dockerClient, err := docker.NewClient(&cfg.Docker)
+	if err != nil {
+		log.Warnf("Failed to create Docker client: %v", err)
+	} else {
+		if err := dockerClient.Ping(ctx); err != nil {
+			log.Warnf("Docker daemon not available: %v", err)
+		} else {
+			log.Info("Connected to Docker daemon")
+		}
+		defer dockerClient.Close()
+	}
+
+	containerManager := docker.NewContainerManager(dockerClient)
+
 	userRepo := postgres.NewUserRepository(db.Pool)
 	refreshTokenRepo := postgres.NewRefreshTokenRepository(db.Pool)
 	teamRepo := postgres.NewTeamRepository(db.Pool)
 	teamMemberRepo := postgres.NewTeamMemberRepository(db.Pool)
 	projectRepo := postgres.NewProjectRepository(db.Pool)
 	serviceRepo := postgres.NewServiceRepository(db.Pool)
+	deploymentRepo := postgres.NewDeploymentRepository(db.Pool)
+	domainRepo := postgres.NewDomainRepository(db.Pool)
 
 	authUseCase := auth.NewUseCase(userRepo, refreshTokenRepo, teamRepo, teamMemberRepo, &cfg.JWT, &cfg.App)
 	userUseCase := user.NewUseCase(userRepo)
 	teamUseCase := team.NewUseCase(teamRepo, teamMemberRepo, userRepo)
 	projectUseCase := project.NewUseCase(projectRepo, teamMemberRepo, encryptor)
-	serviceUseCase := service.NewUseCase(serviceRepo, projectRepo, teamMemberRepo, encryptor)
+	serviceUseCase := service.NewUseCase(serviceRepo, projectRepo, teamMemberRepo, domainRepo, encryptor)
+	deploymentUseCase := deployment.NewUseCase(serviceRepo, projectRepo, teamMemberRepo, deploymentRepo, domainRepo, containerManager, &cfg.Traefik)
 
 	authMiddleware := middleware.NewAuthMiddleware(authUseCase)
 	authHandler := handler.NewAuthHandler(authUseCase, v)
 	userHandler := handler.NewUserHandler(userUseCase, v)
 	teamHandler := handler.NewTeamHandler(teamUseCase, v)
 	projectHandler := handler.NewProjectHandler(projectUseCase, v)
-	serviceHandler := handler.NewServiceHandler(serviceUseCase, v)
+	serviceHandler := handler.NewServiceHandler(serviceUseCase, deploymentUseCase, v)
 	docsHandler := handler.NewDocsHandler()
 
 	router := httpAdapter.NewRouter(&httpAdapter.RouterConfig{

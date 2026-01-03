@@ -1,11 +1,213 @@
 basePath: /api/v1
 definitions:
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.AddTeamMemberRequest:
+    properties:
+      email:
+        example: newmember@example.com
+        type: string
+      role:
+        enum:
+        - admin
+        - member
+        example: member
+        type: string
+    required:
+    - email
+    - role
+    type: object
   github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse:
     properties:
       tokens:
         $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse'
       user:
         $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse'
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateDomainRequest:
+    properties:
+      domain:
+        example: api.example.com
+        maxLength: 255
+        type: string
+      ssl_auto:
+        example: true
+        type: boolean
+      ssl_enabled:
+        example: true
+        type: boolean
+    required:
+    - domain
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateProjectRequest:
+    properties:
+      auto_deploy:
+        example: false
+        type: boolean
+      description:
+        example: A production web application
+        maxLength: 500
+        type: string
+      github_branch:
+        example: main
+        type: string
+      github_repo:
+        example: https://github.com/user/repo
+        type: string
+      github_token:
+        example: ghp_xxxxxxxxxxxxxxxxxxxx
+        type: string
+      name:
+        example: My Web App
+        maxLength: 100
+        minLength: 2
+        type: string
+      slug:
+        example: my-web-app
+        maxLength: 100
+        minLength: 2
+        type: string
+    required:
+    - name
+    - slug
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateServiceRequest:
+    properties:
+      build_context:
+        example: .
+        type: string
+      compose_file:
+        example: docker-compose.yml
+        type: string
+      cpu_limit:
+        example: 0.5
+        type: number
+      deploy_type:
+        enum:
+        - image
+        - dockerfile
+        - compose
+        example: dockerfile
+        type: string
+      dockerfile_path:
+        example: Dockerfile
+        type: string
+      env_vars:
+        items:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.EnvVar'
+        type: array
+      health_check_interval:
+        example: 30
+        type: integer
+      health_check_path:
+        example: /health
+        type: string
+      image:
+        example: nginx:latest
+        type: string
+      memory_limit:
+        example: 512
+        type: integer
+      name:
+        example: api-server
+        maxLength: 100
+        minLength: 2
+        type: string
+      replicas:
+        example: 1
+        type: integer
+      restart_policy:
+        example: unless-stopped
+        type: string
+      slug:
+        example: api-server
+        maxLength: 100
+        minLength: 2
+        type: string
+    required:
+    - deploy_type
+    - name
+    - slug
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateTeamRequest:
+    properties:
+      description:
+        example: A team for awesome projects
+        maxLength: 500
+        type: string
+      name:
+        example: My Awesome Team
+        maxLength: 100
+        minLength: 2
+        type: string
+      slug:
+        example: my-awesome-team
+        maxLength: 100
+        minLength: 2
+        type: string
+    required:
+    - name
+    - slug
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.DeploymentResponse:
+    properties:
+      commit_message:
+        example: Fix bug in API endpoint
+        type: string
+      commit_sha:
+        example: abc123def456
+        type: string
+      finished_at:
+        example: "2024-01-15T10:32:00Z"
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      logs:
+        type: string
+      service_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      started_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      status:
+        example: success
+        type: string
+      triggered_by:
+        example: 550e8400-e29b-41d4-a716-446655440002
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.DomainResponse:
+    properties:
+      created_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      domain:
+        example: api.example.com
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      service_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      ssl_auto:
+        example: true
+        type: boolean
+      ssl_enabled:
+        example: true
+        type: boolean
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.EnvVar:
+    properties:
+      key:
+        example: DATABASE_URL
+        type: string
+      value:
+        example: postgresql://localhost:5432/mydb
+        type: string
+    required:
+    - key
+    - value
     type: object
   github_com_podoru_spinner-podoru_internal_adapter_http_dto.LoginRequest:
     properties:
@@ -18,6 +220,45 @@ definitions:
     required:
     - email
     - password
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse:
+    properties:
+      message:
+        example: Operation completed successfully
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse:
+    properties:
+      auto_deploy:
+        example: true
+        type: boolean
+      created_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      description:
+        example: A production web application
+        type: string
+      github_branch:
+        example: main
+        type: string
+      github_repo:
+        example: https://github.com/user/repo
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      name:
+        example: My Web App
+        type: string
+      slug:
+        example: my-web-app
+        type: string
+      team_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      updated_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
     type: object
   github_com_podoru_spinner-podoru_internal_adapter_http_dto.RefreshRequest:
     properties:
@@ -46,6 +287,161 @@ definitions:
     - name
     - password
     type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.ScaleServiceRequest:
+    properties:
+      replicas:
+        example: 5
+        maximum: 100
+        minimum: 0
+        type: integer
+    required:
+    - replicas
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceLogsResponse:
+    properties:
+      logs:
+        example: |-
+          [2024-01-15 10:30:00] Server started on port 8080
+          [2024-01-15 10:30:01] Connected to database
+        type: string
+      service_id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      timestamp:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse:
+    properties:
+      build_context:
+        example: .
+        type: string
+      container_id:
+        example: abc123def456
+        type: string
+      cpu_limit:
+        example: 0.5
+        type: number
+      created_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      deploy_type:
+        example: dockerfile
+        type: string
+      dockerfile_path:
+        example: Dockerfile
+        type: string
+      health_check_interval:
+        example: 30
+        type: integer
+      health_check_path:
+        example: /health
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      image:
+        example: nginx:latest
+        type: string
+      memory_limit:
+        example: 512
+        type: integer
+      name:
+        example: api-server
+        type: string
+      project_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      replicas:
+        example: 2
+        type: integer
+      restart_policy:
+        example: unless-stopped
+        type: string
+      slug:
+        example: api-server
+        type: string
+      status:
+        example: running
+        type: string
+      swarm_service_id:
+        example: svc_abc123
+        type: string
+      updated_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse:
+    properties:
+      created_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      role:
+        example: member
+        type: string
+      team_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      user:
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse'
+      user_id:
+        example: 550e8400-e29b-41d4-a716-446655440002
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse:
+    properties:
+      created_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      description:
+        example: A team for awesome projects
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      name:
+        example: My Awesome Team
+        type: string
+      owner_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      slug:
+        example: my-awesome-team
+        type: string
+      updated_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamWithRoleResponse:
+    properties:
+      created_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      description:
+        example: A team for awesome projects
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      name:
+        example: My Awesome Team
+        type: string
+      owner_id:
+        example: 550e8400-e29b-41d4-a716-446655440001
+        type: string
+      role:
+        example: owner
+        type: string
+      slug:
+        example: my-awesome-team
+        type: string
+      updated_at:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
   github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse:
     properties:
       access_token:
@@ -59,6 +455,116 @@ definitions:
         type: string
       token_type:
         example: Bearer
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdatePasswordRequest:
+    properties:
+      current_password:
+        example: oldpassword123
+        type: string
+      new_password:
+        example: newpassword456
+        minLength: 8
+        type: string
+    required:
+    - current_password
+    - new_password
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateProjectRequest:
+    properties:
+      auto_deploy:
+        example: true
+        type: boolean
+      description:
+        example: Updated description
+        maxLength: 500
+        type: string
+      github_branch:
+        example: develop
+        type: string
+      github_repo:
+        example: https://github.com/user/new-repo
+        type: string
+      github_token:
+        example: ghp_xxxxxxxxxxxxxxxxxxxx
+        type: string
+      name:
+        example: Updated Project Name
+        maxLength: 100
+        minLength: 2
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateServiceRequest:
+    properties:
+      build_context:
+        example: ./api
+        type: string
+      cpu_limit:
+        example: 1
+        type: number
+      dockerfile_path:
+        example: Dockerfile.prod
+        type: string
+      env_vars:
+        items:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.EnvVar'
+        type: array
+      health_check_interval:
+        example: 60
+        type: integer
+      health_check_path:
+        example: /api/health
+        type: string
+      image:
+        example: nginx:alpine
+        type: string
+      memory_limit:
+        example: 1024
+        type: integer
+      name:
+        example: updated-api-server
+        maxLength: 100
+        minLength: 2
+        type: string
+      replicas:
+        example: 3
+        type: integer
+      restart_policy:
+        example: always
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamMemberRequest:
+    properties:
+      role:
+        enum:
+        - admin
+        - member
+        example: admin
+        type: string
+    required:
+    - role
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamRequest:
+    properties:
+      description:
+        example: Updated description
+        maxLength: 500
+        type: string
+      name:
+        example: Updated Team Name
+        maxLength: 100
+        minLength: 2
+        type: string
+    type: object
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateUserRequest:
+    properties:
+      avatar_url:
+        example: https://example.com/new-avatar.png
+        type: string
+      name:
+        example: John Doe Updated
+        maxLength: 100
+        minLength: 2
         type: string
     type: object
   github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse:
@@ -88,146 +594,6 @@ definitions:
         example: "2024-01-15T10:30:00Z"
         type: string
     type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.Team:
-    properties:
-      created_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      owner_id:
-        type: string
-      slug:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate:
-    properties:
-      description:
-        maxLength: 500
-        type: string
-      name:
-        maxLength: 100
-        minLength: 2
-        type: string
-      slug:
-        maxLength: 100
-        minLength: 2
-        type: string
-    required:
-    - name
-    - slug
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: string
-      role:
-        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
-      team_id:
-        type: string
-      user:
-        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.User'
-      user_id:
-        type: string
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate:
-    properties:
-      email:
-        type: string
-      role:
-        allOf:
-        - $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
-        enum:
-        - admin
-        - member
-    required:
-    - email
-    - role
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate:
-    properties:
-      role:
-        allOf:
-        - $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
-        enum:
-        - admin
-        - member
-    required:
-    - role
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole:
-    enum:
-    - owner
-    - admin
-    - member
-    type: string
-    x-enum-varnames:
-    - TeamRoleOwner
-    - TeamRoleAdmin
-    - TeamRoleMember
-  github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate:
-    properties:
-      description:
-        maxLength: 500
-        type: string
-      name:
-        maxLength: 100
-        minLength: 2
-        type: string
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole:
-    properties:
-      created_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      owner_id:
-        type: string
-      role:
-        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
-      slug:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.User:
-    properties:
-      avatar_url:
-        type: string
-      created_at:
-        type: string
-      email:
-        type: string
-      id:
-        type: string
-      is_active:
-        type: boolean
-      name:
-        type: string
-      role:
-        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.UserRole'
-      updated_at:
-        type: string
-    type: object
-  github_com_podoru_spinner-podoru_internal_domain_entity.UserRole:
-    enum:
-    - superadmin
-    - user
-    type: string
-    x-enum-varnames:
-    - UserRoleSuperAdmin
-    - UserRoleUser
   github_com_podoru_spinner-podoru_pkg_response.ErrorInfo:
     properties:
       code:
@@ -431,6 +797,850 @@ paths:
       summary: Register a new user
       tags:
       - auth
+  /projects/{projectId}:
+    delete:
+      description: Delete a project. Requires admin or owner role.
+      parameters:
+      - description: Project ID
+        format: uuid
+        in: path
+        name: projectId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Project deleted
+        "400":
+          description: Invalid project ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member or insufficient permissions
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Project not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete project
+      tags:
+      - projects
+    get:
+      description: Get project details by ID
+      parameters:
+      - description: Project ID
+        format: uuid
+        in: path
+        name: projectId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Project details
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse'
+              type: object
+        "400":
+          description: Invalid project ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Project not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Get project
+      tags:
+      - projects
+    put:
+      consumes:
+      - application/json
+      description: Update project details. Requires admin or owner role.
+      parameters:
+      - description: Project ID
+        format: uuid
+        in: path
+        name: projectId
+        required: true
+        type: string
+      - description: Project update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated project
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse'
+              type: object
+        "400":
+          description: Invalid request body or validation error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member or insufficient permissions
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Project not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Update project
+      tags:
+      - projects
+  /projects/{projectId}/services:
+    get:
+      description: Get all services in a project
+      parameters:
+      - description: Project ID
+        format: uuid
+        in: path
+        name: projectId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of services
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse'
+                  type: array
+              type: object
+        "400":
+          description: Invalid project ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Project not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: List services
+      tags:
+      - services
+    post:
+      consumes:
+      - application/json
+      description: Create a new service in a project
+      parameters:
+      - description: Project ID
+        format: uuid
+        in: path
+        name: projectId
+        required: true
+        type: string
+      - description: Service data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateServiceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Service created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse'
+              type: object
+        "400":
+          description: Invalid request body or validation error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Project not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "409":
+          description: Slug already exists in this project
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - services
+  /services/{serviceId}:
+    delete:
+      description: Delete a service. Requires admin or owner role.
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Service deleted
+        "400":
+          description: Invalid service ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member or insufficient permissions
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete service
+      tags:
+      - services
+    get:
+      description: Get service details by ID
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service details
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse'
+              type: object
+        "400":
+          description: Invalid service ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - services
+    put:
+      consumes:
+      - application/json
+      description: Update service details
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Service update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateServiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated service
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse'
+              type: object
+        "400":
+          description: Invalid request body or validation error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Update service
+      tags:
+      - services
+  /services/{serviceId}/deploy:
+    post:
+      description: Trigger a deployment for the service
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deployment triggered
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.DeploymentResponse'
+              type: object
+        "400":
+          description: Invalid service ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "409":
+          description: Deployment already in progress
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Deploy service
+      tags:
+      - services
+  /services/{serviceId}/domains:
+    get:
+      description: Get all domains for a service
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of domains
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.DomainResponse'
+                  type: array
+              type: object
+        "400":
+          description: Invalid service ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: List service domains
+      tags:
+      - services
+    post:
+      consumes:
+      - application/json
+      description: Add a domain to a service for Traefik routing
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Domain data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateDomainRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Domain added
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.DomainResponse'
+              type: object
+        "400":
+          description: Invalid request body or validation error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "409":
+          description: Domain already in use
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Add domain to service
+      tags:
+      - services
+  /services/{serviceId}/domains/{domainId}:
+    delete:
+      description: Remove a domain from a service
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Domain ID
+        format: uuid
+        in: path
+        name: domainId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Domain deleted
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service or domain not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete domain from service
+      tags:
+      - services
+  /services/{serviceId}/logs:
+    get:
+      description: Get logs from a service
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - default: 100
+        description: Number of lines to return
+        in: query
+        name: tail
+        type: integer
+      - description: Return logs since this timestamp (RFC3339)
+        example: '"2024-01-15T10:30:00Z"'
+        in: query
+        name: since
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service logs
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceLogsResponse'
+              type: object
+        "400":
+          description: Invalid service ID or service not deployed
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Get service logs
+      tags:
+      - services
+  /services/{serviceId}/restart:
+    post:
+      description: Restart a running service
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service restarted
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse'
+              type: object
+        "400":
+          description: Invalid service ID or service not deployed
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Restart service
+      tags:
+      - services
+  /services/{serviceId}/scale:
+    post:
+      consumes:
+      - application/json
+      description: Scale a service to a specified number of replicas
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      - description: Scale data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ScaleServiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Scaled service
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse'
+              type: object
+        "400":
+          description: Invalid request body or validation error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Scale service
+      tags:
+      - services
+  /services/{serviceId}/start:
+    post:
+      description: Start a stopped service
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service started
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse'
+              type: object
+        "400":
+          description: Invalid service ID or service not deployed
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Start service
+      tags:
+      - services
+  /services/{serviceId}/stop:
+    post:
+      description: Stop a running service
+      parameters:
+      - description: Service ID
+        format: uuid
+        in: path
+        name: serviceId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service stopped
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse'
+              type: object
+        "400":
+          description: Invalid service ID or service not deployed
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "404":
+          description: Service not found
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Stop service
+      tags:
+      - services
   /teams:
     get:
       description: Get all teams the current user is a member of
@@ -445,7 +1655,7 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole'
+                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamWithRoleResponse'
                   type: array
               type: object
         "401":
@@ -471,7 +1681,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateTeamRequest'
       produces:
       - application/json
       responses:
@@ -482,7 +1692,7 @@ paths:
             - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse'
               type: object
         "400":
           description: Invalid request body or validation error
@@ -564,7 +1774,7 @@ paths:
             - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse'
               type: object
         "400":
           description: Invalid team ID
@@ -607,7 +1817,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamRequest'
       produces:
       - application/json
       responses:
@@ -618,7 +1828,7 @@ paths:
             - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse'
               type: object
         "400":
           description: Invalid request body or validation error
@@ -666,7 +1876,7 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember'
+                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse'
                   type: array
               type: object
         "400":
@@ -706,7 +1916,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.AddTeamMemberRequest'
       produces:
       - application/json
       responses:
@@ -717,7 +1927,7 @@ paths:
             - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse'
               type: object
         "400":
           description: Invalid request body or validation error
@@ -813,7 +2023,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamMemberRequest'
       produces:
       - application/json
       responses:
@@ -824,7 +2034,7 @@ paths:
             - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse'
               type: object
         "400":
           description: Invalid request body or validation error
@@ -848,6 +2058,105 @@ paths:
       summary: Update team member
       tags:
       - teams
+  /teams/{teamId}/projects:
+    get:
+      description: Get all projects in a team
+      parameters:
+      - description: Team ID
+        format: uuid
+        in: path
+        name: teamId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of projects
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse'
+                  type: array
+              type: object
+        "400":
+          description: Invalid team ID
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: List projects
+      tags:
+      - projects
+    post:
+      consumes:
+      - application/json
+      description: Create a new project in a team
+      parameters:
+      - description: Team ID
+        format: uuid
+        in: path
+        name: teamId
+        required: true
+        type: string
+      - description: Project data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Project created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse'
+              type: object
+        "400":
+          description: Invalid request body or validation error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "403":
+          description: Not a team member
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "409":
+          description: Slug already exists in this team
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
+      security:
+      - BearerAuth: []
+      summary: Create project
+      tags:
+      - projects
   /users/me:
     get:
       description: Get the profile of the currently authenticated user
@@ -889,12 +2198,7 @@ paths:
         in: body
         name: request
         schema:
-          properties:
-            avatar_url:
-              type: string
-            name:
-              type: string
-          type: object
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateUserRequest'
       produces:
       - application/json
       responses:
@@ -939,12 +2243,7 @@ paths:
         name: request
         required: true
         schema:
-          properties:
-            current_password:
-              type: string
-            new_password:
-              type: string
-          type: object
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdatePasswordRequest'
       produces:
       - application/json
       responses:

@@ -14,18 +14,21 @@ import (
 )
 
 var (
-	ErrServiceNotFound   = errors.New("service not found")
-	ErrProjectNotFound   = errors.New("project not found")
-	ErrSlugAlreadyExists = errors.New("slug already exists")
-	ErrNotTeamMember     = errors.New("not a team member")
-	ErrNotTeamAdmin      = errors.New("requires admin or owner role")
-	ErrImageRequired     = errors.New("image is required for image deploy type")
+	ErrServiceNotFound    = errors.New("service not found")
+	ErrProjectNotFound    = errors.New("project not found")
+	ErrSlugAlreadyExists  = errors.New("slug already exists")
+	ErrNotTeamMember      = errors.New("not a team member")
+	ErrNotTeamAdmin       = errors.New("requires admin or owner role")
+	ErrImageRequired      = errors.New("image is required for image deploy type")
+	ErrDomainNotFound     = errors.New("domain not found")
+	ErrDomainAlreadyInUse = errors.New("domain already in use")
 )
 
 type UseCase struct {
 	serviceRepo    repository.ServiceRepository
 	projectRepo    repository.ProjectRepository
 	teamMemberRepo repository.TeamMemberRepository
+	domainRepo     repository.DomainRepository
 	encryptor      *crypto.Encryptor
 }
 
@@ -33,12 +36,14 @@ func NewUseCase(
 	serviceRepo repository.ServiceRepository,
 	projectRepo repository.ProjectRepository,
 	teamMemberRepo repository.TeamMemberRepository,
+	domainRepo repository.DomainRepository,
 	encryptor *crypto.Encryptor,
 ) *UseCase {
 	return &UseCase{
 		serviceRepo:    serviceRepo,
 		projectRepo:    projectRepo,
 		teamMemberRepo: teamMemberRepo,
+		domainRepo:     domainRepo,
 		encryptor:      encryptor,
 	}
 }
@@ -328,4 +333,130 @@ func (uc *UseCase) Scale(ctx context.Context, userID, serviceID uuid.UUID, repli
 	}
 
 	return service, nil
+}
+
+// Domain operations
+
+func (uc *UseCase) AddDomain(ctx context.Context, userID, serviceID uuid.UUID, input *entity.DomainCreate) (*entity.Domain, error) {
+	service, err := uc.serviceRepo.GetByID(ctx, serviceID)
+	if err != nil {
+		return nil, err
+	}
+	if service == nil {
+		return nil, ErrServiceNotFound
+	}
+
+	project, err := uc.projectRepo.GetByID(ctx, service.ProjectID)
+	if err != nil {
+		return nil, err
+	}
+	if project == nil {
+		return nil, ErrProjectNotFound
+	}
+
+	member, err := uc.teamMemberRepo.GetByTeamAndUser(ctx, project.TeamID, userID)
+	if err != nil {
+		return nil, err
+	}
+	if member == nil {
+		return nil, ErrNotTeamMember
+	}
+
+	// Check if domain already exists
+	exists, err := uc.domainRepo.ExistsByDomain(ctx, input.Domain)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
+		return nil, ErrDomainAlreadyInUse
+	}
+
+	sslEnabled := true
+	sslAuto := true
+	if input.SSLEnabled != nil {
+		sslEnabled = *input.SSLEnabled
+	}
+	if input.SSLAuto != nil {
+		sslAuto = *input.SSLAuto
+	}
+
+	domain := &entity.Domain{
+		ID:         uuid.New(),
+		ServiceID:  serviceID,
+		Domain:     input.Domain,
+		SSLEnabled: sslEnabled,
+		SSLAuto:    sslAuto,
+		CreatedAt:  time.Now(),
+	}
+
+	if err := uc.domainRepo.Create(ctx, domain); err != nil {
+		return nil, err
+	}
+
+	return domain, nil
+}
+
+func (uc *UseCase) ListDomains(ctx context.Context, userID, serviceID uuid.UUID) ([]entity.Domain, error) {
+	service, err := uc.serviceRepo.GetByID(ctx, serviceID)
+	if err != nil {
+		return nil, err
+	}
+	if service == nil {
+		return nil, ErrServiceNotFound
+	}
+
+	project, err := uc.projectRepo.GetByID(ctx, service.ProjectID)
+	if err != nil {
+		return nil, err
+	}
+	if project == nil {
+		return nil, ErrProjectNotFound
+	}
+
+	member, err := uc.teamMemberRepo.GetByTeamAndUser(ctx, project.TeamID, userID)
+	if err != nil {
+		return nil, err
+	}
+	if member == nil {
+		return nil, ErrNotTeamMember
+	}
+
+	return uc.domainRepo.ListByServiceID(ctx, serviceID)
+}
+
+func (uc *UseCase) DeleteDomain(ctx context.Context, userID, serviceID, domainID uuid.UUID) error {
+	service, err := uc.serviceRepo.GetByID(ctx, serviceID)
+	if err != nil {
+		return err
+	}
+	if service == nil {
+		return ErrServiceNotFound
+	}
+
+	project, err := uc.projectRepo.GetByID(ctx, service.ProjectID)
+	if err != nil {
+		return err
+	}
+	if project == nil {
+		return ErrProjectNotFound
+	}
+
+	member, err := uc.teamMemberRepo.GetByTeamAndUser(ctx, project.TeamID, userID)
+	if err != nil {
+		return err
+	}
+	if member == nil {
+		return ErrNotTeamMember
+	}
+
+	// Verify domain belongs to this service
+	domain, err := uc.domainRepo.GetByID(ctx, domainID)
+	if err != nil {
+		return err
+	}
+	if domain == nil || domain.ServiceID != serviceID {
+		return ErrDomainNotFound
+	}
+
+	return uc.domainRepo.Delete(ctx, domainID)
 }

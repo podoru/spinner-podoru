@@ -175,5 +175,10 @@ func (r *Router) setupServiceRoutes(api *gin.RouterGroup) {
 		services.POST("/:serviceId/restart", r.serviceHandler.Restart)
 		services.POST("/:serviceId/scale", r.serviceHandler.Scale)
 		services.GET("/:serviceId/logs", r.serviceHandler.Logs)
+
+		// Domain routes
+		services.GET("/:serviceId/domains", r.serviceHandler.ListDomains)
+		services.POST("/:serviceId/domains", r.serviceHandler.AddDomain)
+		services.DELETE("/:serviceId/domains/:domainId", r.serviceHandler.DeleteDomain)
 	}
 }

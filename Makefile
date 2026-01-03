@@ -50,6 +50,21 @@ dev:
 		$(HOME)/go/bin/air; \
 	fi
 
+## dev-traefik: Start Traefik for local development
+dev-traefik:
+	@echo "Starting Traefik..."
+	@docker-compose up -d traefik
+	@echo "Traefik started. Dashboard: http://localhost:8081"
+
+## dev-full: Start full development environment (database + traefik + hot reload)
+dev-full:
+	@echo "Starting full development environment..."
+	@docker-compose up -d postgres traefik
+	@echo "Waiting for services..."
+	@sleep 3
+	@echo "Starting application with hot reload..."
+	@$(MAKE) dev
+
 ## test: Run tests
 test:
 	@echo "Running tests..."
@@ -178,8 +193,16 @@ dev-reset:
 ## docs: Generate API documentation (Swagger/OpenAPI)
 docs:
 	@echo "Generating API documentation..."
-	@if command -v swag > /dev/null; then \
-		swag init -g cmd/podoru/main.go -o docs --parseDependency --parseInternal --parseDepth 3; \
+	@SWAG_CMD=""; \
+	if command -v swag > /dev/null 2>&1; then \
+		SWAG_CMD="swag"; \
+	elif [ -x "$$HOME/go/bin/swag" ]; then \
+		SWAG_CMD="$$HOME/go/bin/swag"; \
+	elif [ -x "$$(go env GOPATH)/bin/swag" ]; then \
+		SWAG_CMD="$$(go env GOPATH)/bin/swag"; \
+	fi; \
+	if [ -n "$$SWAG_CMD" ]; then \
+		$$SWAG_CMD init -g cmd/podoru/main.go -o docs --parseDependency --parseInternal --parseDepth 3; \
 	else \
 		echo "swag not installed. Install with: go install github.com/swaggo/swag/cmd/swag@v1.16.3"; \
 		exit 1; \

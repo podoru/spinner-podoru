@@ -487,6 +487,15 @@ run_quick() {
         print_success "PostgreSQL is already running"
     fi
 
+    # Start Traefik if not running
+    if ! docker ps --format '{{.Names}}' | grep -q 'podoru_traefik'; then
+        print_info "Starting Traefik..."
+        docker-compose up -d traefik
+        print_success "Traefik started (Dashboard: http://localhost:8081)"
+    else
+        print_success "Traefik is already running"
+    fi
+
     # Build and run
     print_info "Starting application..."
     echo ""

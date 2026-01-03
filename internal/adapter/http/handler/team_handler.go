@@ -6,12 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
+	"github.com/podoru/spinner-podoru/internal/adapter/http/dto"
 	"github.com/podoru/spinner-podoru/internal/adapter/http/middleware"
 	"github.com/podoru/spinner-podoru/internal/domain/entity"
 	"github.com/podoru/spinner-podoru/internal/usecase/team"
 	"github.com/podoru/spinner-podoru/pkg/response"
 	"github.com/podoru/spinner-podoru/pkg/validator"
 )
+
+// Ensure dto is used (for swagger)
+var _ = dto.TeamResponse{}
 
 type TeamHandler struct {
 	teamUseCase *team.UseCase
@@ -31,7 +35,7 @@ func NewTeamHandler(teamUseCase *team.UseCase, validator *validator.Validator) *
 // @Tags         teams
 // @Produce      json
 // @Security     BearerAuth
-// @Success      200 {object} response.Response{data=[]entity.TeamWithRole} "List of teams"
+// @Success      200 {object} response.Response{data=[]dto.TeamWithRoleResponse} "List of teams"
 // @Failure      401 {object} response.Response "User not authenticated"
 // @Failure      500 {object} response.Response "Internal server error"
 // @Router       /teams [get]
@@ -58,8 +62,8 @@ func (h *TeamHandler) List(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Security     BearerAuth
-// @Param        request body entity.TeamCreate true "Team data"
-// @Success      201 {object} response.Response{data=entity.Team} "Team created"
+// @Param        request body dto.CreateTeamRequest true "Team data"
+// @Success      201 {object} response.Response{data=dto.TeamResponse} "Team created"
 // @Failure      400 {object} response.Response "Invalid request body or validation error"
 // @Failure      401 {object} response.Response "User not authenticated"
 // @Failure      409 {object} response.Response "Slug already exists"
@@ -103,7 +107,7 @@ func (h *TeamHandler) Create(c *gin.Context) {
 // @Produce      json
 // @Security     BearerAuth
 // @Param        teamId path string true "Team ID" format(uuid)
-// @Success      200 {object} response.Response{data=entity.Team} "Team details"
+// @Success      200 {object} response.Response{data=dto.TeamResponse} "Team details"
 // @Failure      400 {object} response.Response "Invalid team ID"
 // @Failure      401 {object} response.Response "User not authenticated"
 // @Failure      403 {object} response.Response "Not a team member"
@@ -148,8 +152,8 @@ func (h *TeamHandler) Get(c *gin.Context) {
 // @Produce      json
 // @Security     BearerAuth
 // @Param        teamId path string true "Team ID" format(uuid)
-// @Param        request body entity.TeamUpdate true "Team update data"
-// @Success      200 {object} response.Response{data=entity.Team} "Updated team"
+// @Param        request body dto.UpdateTeamRequest true "Team update data"
+// @Success      200 {object} response.Response{data=dto.TeamResponse} "Updated team"
 // @Failure      400 {object} response.Response "Invalid request body or validation error"
 // @Failure      401 {object} response.Response "User not authenticated"
 // @Failure      403 {object} response.Response "Not a team member or insufficient permissions"
@@ -255,7 +259,7 @@ func (h *TeamHandler) Delete(c *gin.Context) {
 // @Produce      json
 // @Security     BearerAuth
 // @Param        teamId path string true "Team ID" format(uuid)
-// @Success      200 {object} response.Response{data=[]entity.TeamMember} "List of team members"
+// @Success      200 {object} response.Response{data=[]dto.TeamMemberResponse} "List of team members"
 // @Failure      400 {object} response.Response "Invalid team ID"
 // @Failure      401 {object} response.Response "User not authenticated"
 // @Failure      403 {object} response.Response "Not a team member"
@@ -295,8 +299,8 @@ func (h *TeamHandler) ListMembers(c *gin.Context) {
 // @Produce      json
 // @Security     BearerAuth
 // @Param        teamId path string true "Team ID" format(uuid)
-// @Param        request body entity.TeamMemberCreate true "Member data"
-// @Success      201 {object} response.Response{data=entity.TeamMember} "Member added"
+// @Param        request body dto.AddTeamMemberRequest true "Member data"
+// @Success      201 {object} response.Response{data=dto.TeamMemberResponse} "Member added"
 // @Failure      400 {object} response.Response "Invalid request body or validation error"
 // @Failure      401 {object} response.Response "User not authenticated"
 // @Failure      403 {object} response.Response "Not a team member or insufficient permissions"
@@ -362,8 +366,8 @@ func (h *TeamHandler) AddMember(c *gin.Context) {
 // @Security     BearerAuth
 // @Param        teamId path string true "Team ID" format(uuid)
 // @Param        userId path string true "User ID" format(uuid)
-// @Param        request body entity.TeamMemberUpdate true "Member update data"
-// @Success      200 {object} response.Response{data=entity.TeamMember} "Updated member"
+// @Param        request body dto.UpdateTeamMemberRequest true "Member update data"
+// @Success      200 {object} response.Response{data=dto.TeamMemberResponse} "Updated member"
 // @Failure      400 {object} response.Response "Invalid request body or validation error"
 // @Failure      401 {object} response.Response "User not authenticated"
 // @Failure      403 {object} response.Response "Not a team member, insufficient permissions, or cannot modify owner"

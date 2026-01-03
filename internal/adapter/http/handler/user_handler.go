@@ -63,7 +63,7 @@ func (h *UserHandler) GetMe(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Security     BearerAuth
-// @Param        request body object{name=string,avatar_url=string} false "User update data"
+// @Param        request body dto.UpdateUserRequest false "User update data"
 // @Success      200 {object} response.Response{data=dto.UserResponse} "Updated user profile"
 // @Failure      400 {object} response.Response "Invalid request body or validation error"
 // @Failure      401 {object} response.Response "User not authenticated"
@@ -117,7 +117,7 @@ func (h *UserHandler) UpdateMe(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Security     BearerAuth
-// @Param        request body object{current_password=string,new_password=string} true "Password change data"
+// @Param        request body dto.UpdatePasswordRequest true "Password change data"
 // @Success      204 "Password updated successfully"
 // @Failure      400 {object} response.Response "Invalid request or current password incorrect"
 // @Failure      401 {object} response.Response "User not authenticated"

@@ -269,6 +269,1364 @@
                 }
             }
         },
+        "/projects/{projectId}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get project details by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "Get project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Project ID",
+                        "name": "projectId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project details",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid project ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update project details. Requires admin or owner role.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "Update project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Project ID",
+                        "name": "projectId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Project update data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateProjectRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated project",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member or insufficient permissions",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a project. Requires admin or owner role.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "Delete project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Project ID",
+                        "name": "projectId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Project deleted"
+                    },
+                    "400": {
+                        "description": "Invalid project ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member or insufficient permissions",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{projectId}/services": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all services in a project",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "List services",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Project ID",
+                        "name": "projectId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of services",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid project ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new service in a project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Create service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Project ID",
+                        "name": "projectId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Service data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateServiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Service created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Slug already exists in this project",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get service details by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Get service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service details",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid service ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update service details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Update service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Service update data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateServiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated service",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a service. Requires admin or owner role.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Delete service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Service deleted"
+                    },
+                    "400": {
+                        "description": "Invalid service ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member or insufficient permissions",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/deploy": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Trigger a deployment for the service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Deploy service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deployment triggered",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.DeploymentResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid service ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Deployment already in progress",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/domains": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all domains for a service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "List service domains",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of domains",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.DomainResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid service ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Add a domain to a service for Traefik routing",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Add domain to service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Domain data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateDomainRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Domain added",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.DomainResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Domain already in use",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/domains/{domainId}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Remove a domain from a service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Delete domain from service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Domain ID",
+                        "name": "domainId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Domain deleted"
+                    },
+                    "400": {
+                        "description": "Invalid ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service or domain not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/logs": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get logs from a service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Get service logs",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 100,
+                        "description": "Number of lines to return",
+                        "name": "tail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"2024-01-15T10:30:00Z\"",
+                        "description": "Return logs since this timestamp (RFC3339)",
+                        "name": "since",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service logs",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceLogsResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid service ID or service not deployed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/restart": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Restart a running service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Restart service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service restarted",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid service ID or service not deployed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/scale": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Scale a service to a specified number of replicas",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Scale service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Scale data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ScaleServiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Scaled service",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/start": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Start a stopped service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Start service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service started",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid service ID or service not deployed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{serviceId}/stop": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Stop a running service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "services"
+                ],
+                "summary": "Stop service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Service ID",
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service stopped",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid service ID or service not deployed",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/teams": {
             "get": {
                 "security": [
@@ -298,7 +1656,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole"
+                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamWithRoleResponse"
                                             }
                                         }
                                     }
@@ -344,7 +1702,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateTeamRequest"
                         }
                     }
                 ],
@@ -360,7 +1718,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse"
                                         }
                                     }
                                 }
@@ -431,7 +1789,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse"
                                         }
                                     }
                                 }
@@ -502,7 +1860,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamRequest"
                         }
                     }
                 ],
@@ -518,7 +1876,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse"
                                         }
                                     }
                                 }
@@ -657,7 +2015,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember"
+                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse"
                                             }
                                         }
                                     }
@@ -723,7 +2081,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.AddTeamMemberRequest"
                         }
                     }
                 ],
@@ -739,7 +2097,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse"
                                         }
                                     }
                                 }
@@ -826,7 +2184,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamMemberRequest"
                         }
                     }
                 ],
@@ -842,7 +2200,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse"
                                         }
                                     }
                                 }
@@ -938,6 +2296,167 @@
                 }
             }
         },
+        "/teams/{teamId}/projects": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all projects in a team",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "List projects",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Team ID",
+                        "name": "teamId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of projects",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid team ID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new project in a team",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "Create project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Team ID",
+                        "name": "teamId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Project data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateProjectRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Project created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or validation error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "User not authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Not a team member",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Slug already exists in this team",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users/me": {
             "get": {
                 "security": [
@@ -1015,15 +2534,7 @@
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "avatar_url": {
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateUserRequest"
                         }
                     }
                 ],
@@ -1098,15 +2609,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "current_password": {
-                                    "type": "string"
-                                },
-                                "new_password": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdatePasswordRequest"
                         }
                     }
                 ],
@@ -1143,6 +2646,27 @@
         }
     },
     "definitions": {
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.AddTeamMemberRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "role"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "newmember@example.com"
+                },
+                "role": {
+                    "type": "string",
+                    "enum": [
+                        "admin",
+                        "member"
+                    ],
+                    "example": "member"
+                }
+            }
+        },
         "github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse": {
             "type": "object",
             "properties": {
@@ -1151,6 +2675,258 @@
                 },
                 "user": {
                     "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateDomainRequest": {
+            "type": "object",
+            "required": [
+                "domain"
+            ],
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "api.example.com"
+                },
+                "ssl_auto": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "ssl_enabled": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateProjectRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "slug"
+            ],
+            "properties": {
+                "auto_deploy": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "example": "A production web application"
+                },
+                "github_branch": {
+                    "type": "string",
+                    "example": "main"
+                },
+                "github_repo": {
+                    "type": "string",
+                    "example": "https://github.com/user/repo"
+                },
+                "github_token": {
+                    "type": "string",
+                    "example": "ghp_xxxxxxxxxxxxxxxxxxxx"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "My Web App"
+                },
+                "slug": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "my-web-app"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateServiceRequest": {
+            "type": "object",
+            "required": [
+                "deploy_type",
+                "name",
+                "slug"
+            ],
+            "properties": {
+                "build_context": {
+                    "type": "string",
+                    "example": "."
+                },
+                "compose_file": {
+                    "type": "string",
+                    "example": "docker-compose.yml"
+                },
+                "cpu_limit": {
+                    "type": "number",
+                    "example": 0.5
+                },
+                "deploy_type": {
+                    "type": "string",
+                    "enum": [
+                        "image",
+                        "dockerfile",
+                        "compose"
+                    ],
+                    "example": "dockerfile"
+                },
+                "dockerfile_path": {
+                    "type": "string",
+                    "example": "Dockerfile"
+                },
+                "env_vars": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.EnvVar"
+                    }
+                },
+                "health_check_interval": {
+                    "type": "integer",
+                    "example": 30
+                },
+                "health_check_path": {
+                    "type": "string",
+                    "example": "/health"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "nginx:latest"
+                },
+                "memory_limit": {
+                    "type": "integer",
+                    "example": 512
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "api-server"
+                },
+                "replicas": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "restart_policy": {
+                    "type": "string",
+                    "example": "unless-stopped"
+                },
+                "slug": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "api-server"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.CreateTeamRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "slug"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "example": "A team for awesome projects"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "My Awesome Team"
+                },
+                "slug": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "my-awesome-team"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.DeploymentResponse": {
+            "type": "object",
+            "properties": {
+                "commit_message": {
+                    "type": "string",
+                    "example": "Fix bug in API endpoint"
+                },
+                "commit_sha": {
+                    "type": "string",
+                    "example": "abc123def456"
+                },
+                "finished_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:32:00Z"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "logs": {
+                    "type": "string"
+                },
+                "service_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440001"
+                },
+                "started_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
+                },
+                "triggered_by": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440002"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.DomainResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "domain": {
+                    "type": "string",
+                    "example": "api.example.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "service_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440001"
+                },
+                "ssl_auto": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "ssl_enabled": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.EnvVar": {
+            "type": "object",
+            "required": [
+                "key",
+                "value"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "example": "DATABASE_URL"
+                },
+                "value": {
+                    "type": "string",
+                    "example": "postgresql://localhost:5432/mydb"
                 }
             }
         },
@@ -1168,6 +2944,60 @@
                 "password": {
                     "type": "string",
                     "example": "securepassword123"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.MessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Operation completed successfully"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.ProjectResponse": {
+            "type": "object",
+            "properties": {
+                "auto_deploy": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "A production web application"
+                },
+                "github_branch": {
+                    "type": "string",
+                    "example": "main"
+                },
+                "github_repo": {
+                    "type": "string",
+                    "example": "https://github.com/user/repo"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "My Web App"
+                },
+                "slug": {
+                    "type": "string",
+                    "example": "my-web-app"
+                },
+                "team_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440001"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
                 }
             }
         },
@@ -1208,6 +3038,216 @@
                 }
             }
         },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.ScaleServiceRequest": {
+            "type": "object",
+            "required": [
+                "replicas"
+            ],
+            "properties": {
+                "replicas": {
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 0,
+                    "example": 5
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceLogsResponse": {
+            "type": "object",
+            "properties": {
+                "logs": {
+                    "type": "string",
+                    "example": "[2024-01-15 10:30:00] Server started on port 8080\n[2024-01-15 10:30:01] Connected to database"
+                },
+                "service_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.ServiceResponse": {
+            "type": "object",
+            "properties": {
+                "build_context": {
+                    "type": "string",
+                    "example": "."
+                },
+                "container_id": {
+                    "type": "string",
+                    "example": "abc123def456"
+                },
+                "cpu_limit": {
+                    "type": "number",
+                    "example": 0.5
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "deploy_type": {
+                    "type": "string",
+                    "example": "dockerfile"
+                },
+                "dockerfile_path": {
+                    "type": "string",
+                    "example": "Dockerfile"
+                },
+                "health_check_interval": {
+                    "type": "integer",
+                    "example": 30
+                },
+                "health_check_path": {
+                    "type": "string",
+                    "example": "/health"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "nginx:latest"
+                },
+                "memory_limit": {
+                    "type": "integer",
+                    "example": 512
+                },
+                "name": {
+                    "type": "string",
+                    "example": "api-server"
+                },
+                "project_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440001"
+                },
+                "replicas": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "restart_policy": {
+                    "type": "string",
+                    "example": "unless-stopped"
+                },
+                "slug": {
+                    "type": "string",
+                    "example": "api-server"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "running"
+                },
+                "swarm_service_id": {
+                    "type": "string",
+                    "example": "svc_abc123"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamMemberResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "member"
+                },
+                "team_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440001"
+                },
+                "user": {
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse"
+                },
+                "user_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440002"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "A team for awesome projects"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "My Awesome Team"
+                },
+                "owner_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440001"
+                },
+                "slug": {
+                    "type": "string",
+                    "example": "my-awesome-team"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.TeamWithRoleResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "A team for awesome projects"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "My Awesome Team"
+                },
+                "owner_id": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440001"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "owner"
+                },
+                "slug": {
+                    "type": "string",
+                    "example": "my-awesome-team"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
         "github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse": {
             "type": "object",
             "properties": {
@@ -1226,6 +3266,156 @@
                 "token_type": {
                     "type": "string",
                     "example": "Bearer"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdatePasswordRequest": {
+            "type": "object",
+            "required": [
+                "current_password",
+                "new_password"
+            ],
+            "properties": {
+                "current_password": {
+                    "type": "string",
+                    "example": "oldpassword123"
+                },
+                "new_password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "example": "newpassword456"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateProjectRequest": {
+            "type": "object",
+            "properties": {
+                "auto_deploy": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "example": "Updated description"
+                },
+                "github_branch": {
+                    "type": "string",
+                    "example": "develop"
+                },
+                "github_repo": {
+                    "type": "string",
+                    "example": "https://github.com/user/new-repo"
+                },
+                "github_token": {
+                    "type": "string",
+                    "example": "ghp_xxxxxxxxxxxxxxxxxxxx"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "Updated Project Name"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateServiceRequest": {
+            "type": "object",
+            "properties": {
+                "build_context": {
+                    "type": "string",
+                    "example": "./api"
+                },
+                "cpu_limit": {
+                    "type": "number",
+                    "example": 1
+                },
+                "dockerfile_path": {
+                    "type": "string",
+                    "example": "Dockerfile.prod"
+                },
+                "env_vars": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.EnvVar"
+                    }
+                },
+                "health_check_interval": {
+                    "type": "integer",
+                    "example": 60
+                },
+                "health_check_path": {
+                    "type": "string",
+                    "example": "/api/health"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "nginx:alpine"
+                },
+                "memory_limit": {
+                    "type": "integer",
+                    "example": 1024
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "updated-api-server"
+                },
+                "replicas": {
+                    "type": "integer",
+                    "example": 3
+                },
+                "restart_policy": {
+                    "type": "string",
+                    "example": "always"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamMemberRequest": {
+            "type": "object",
+            "required": [
+                "role"
+            ],
+            "properties": {
+                "role": {
+                    "type": "string",
+                    "enum": [
+                        "admin",
+                        "member"
+                    ],
+                    "example": "admin"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateTeamRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "example": "Updated description"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "Updated Team Name"
+                }
+            }
+        },
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.UpdateUserRequest": {
+            "type": "object",
+            "properties": {
+                "avatar_url": {
+                    "type": "string",
+                    "example": "https://example.com/new-avatar.png"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "example": "John Doe Updated"
                 }
             }
         },
@@ -1265,216 +3455,6 @@
                     "example": "2024-01-15T10:30:00Z"
                 }
             }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.Team": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "owner_id": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate": {
-            "type": "object",
-            "required": [
-                "name",
-                "slug"
-            ],
-            "properties": {
-                "description": {
-                    "type": "string",
-                    "maxLength": 500
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
-                },
-                "slug": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "role": {
-                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
-                },
-                "team_id": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.User"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate": {
-            "type": "object",
-            "required": [
-                "email",
-                "role"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "role": {
-                    "enum": [
-                        "admin",
-                        "member"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
-                        }
-                    ]
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate": {
-            "type": "object",
-            "required": [
-                "role"
-            ],
-            "properties": {
-                "role": {
-                    "enum": [
-                        "admin",
-                        "member"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
-                        }
-                    ]
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole": {
-            "type": "string",
-            "enum": [
-                "owner",
-                "admin",
-                "member"
-            ],
-            "x-enum-varnames": [
-                "TeamRoleOwner",
-                "TeamRoleAdmin",
-                "TeamRoleMember"
-            ]
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string",
-                    "maxLength": 500
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "owner_id": {
-                    "type": "string"
-                },
-                "role": {
-                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.User": {
-            "type": "object",
-            "properties": {
-                "avatar_url": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "role": {
-                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.UserRole"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_podoru_spinner-podoru_internal_domain_entity.UserRole": {
-            "type": "string",
-            "enum": [
-                "superadmin",
-                "user"
-            ],
-            "x-enum-varnames": [
-                "UserRoleSuperAdmin",
-                "UserRoleUser"
-            ]
         },
         "github_com_podoru_spinner-podoru_pkg_response.ErrorInfo": {
             "type": "object",
