@@ -28,6 +28,7 @@ vendor/
 .env
 .env.local
 .env.*.local
+.env.prod
 
 # OS files
 .DS_Store
@@ -57,3 +58,6 @@ traefik_data/
 *.pem
 *.key
 secrets/
+
+# Backups
+backups/

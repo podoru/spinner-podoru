@@ -1,4 +1,5 @@
-.PHONY: build run dev test clean lint migrate-up migrate-down docker-up docker-down docs help
+.PHONY: build run dev test clean lint migrate-up migrate-down docker-up docker-down docs help \
+	prod-check prod-install prod-up prod-down prod-logs prod-restart prod-backup prod-update prod-secrets
 
 BINARY_NAME=podoru
 BUILD_DIR=bin
@@ -157,3 +158,112 @@ docs:
 
 ## all: Build and test
 all: lint test build
+
+# =============================================================================
+# Production Commands
+# =============================================================================
+
+## prod-check: Run pre-flight checks for production deployment
+prod-check:
+	@chmod +x scripts/install.sh
+	@./scripts/install.sh check
+
+## prod-install: Run full production installation
+prod-install:
+	@chmod +x scripts/install.sh
+	@./scripts/install.sh install
+
+## prod-secrets: Generate secure secrets for production
+prod-secrets:
+	@chmod +x scripts/install.sh
+	@./scripts/install.sh secrets
+
+## prod-env: Create .env.prod template file
+prod-env:
+	@chmod +x scripts/install.sh
+	@./scripts/install.sh env
+
+## prod-up: Start production services
+prod-up:
+	@echo "Starting production services..."
+	@docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
+	@echo "Services started. Run 'make prod-logs' to view logs."
+
+## prod-down: Stop production services
+prod-down:
+	@echo "Stopping production services..."
+	@docker compose -f docker-compose.prod.yml --env-file .env.prod down
+	@echo "Services stopped."
+
+## prod-restart: Restart production services
+prod-restart:
+	@echo "Restarting production services..."
+	@docker compose -f docker-compose.prod.yml --env-file .env.prod restart
+	@echo "Services restarted."
+
+## prod-logs: View production logs (follow mode)
+prod-logs:
+	@docker compose -f docker-compose.prod.yml logs -f
+
+## prod-status: Show production services status
+prod-status:
+	@echo "Production Services Status:"
+	@echo "============================"
+	@docker compose -f docker-compose.prod.yml ps
+	@echo ""
+	@echo "Resource Usage:"
+	@docker stats --no-stream $$(docker compose -f docker-compose.prod.yml ps -q) 2>/dev/null || true
+
+## prod-backup: Backup PostgreSQL database
+prod-backup:
+	@echo "Creating database backup..."
+	@mkdir -p backups
+	@docker compose -f docker-compose.prod.yml exec -T postgres pg_dump -U $${DB_USER:-podoru} $${DB_NAME:-podoru} | gzip > backups/podoru_$$(date +%Y%m%d_%H%M%S).sql.gz
+	@echo "Backup created: backups/podoru_$$(date +%Y%m%d_%H%M%S).sql.gz"
+	@ls -lh backups/*.sql.gz | tail -5
+
+## prod-restore: Restore PostgreSQL database (usage: make prod-restore file=backups/backup.sql.gz)
+prod-restore:
+	@if [ -z "$(file)" ]; then \
+		echo "Usage: make prod-restore file=backups/backup.sql.gz"; \
+		echo "Available backups:"; \
+		ls -lh backups/*.sql.gz 2>/dev/null || echo "  No backups found"; \
+		exit 1; \
+	fi
+	@echo "Restoring database from $(file)..."
+	@read -p "This will overwrite the current database. Continue? [y/N] " confirm && [ "$$confirm" = "y" ] || exit 1
+	@gunzip -c $(file) | docker compose -f docker-compose.prod.yml exec -T postgres psql -U $${DB_USER:-podoru} $${DB_NAME:-podoru}
+	@echo "Database restored."
+
+## prod-update: Update production to latest version
+prod-update:
+	@echo "Updating Podoru to latest version..."
+	@echo ""
+	@echo "Step 1: Creating backup..."
+	@$(MAKE) prod-backup
+	@echo ""
+	@echo "Step 2: Pulling latest code..."
+	@git pull origin master
+	@echo ""
+	@echo "Step 3: Rebuilding application..."
+	@docker compose -f docker-compose.prod.yml --env-file .env.prod build --no-cache podoru
+	@echo ""
+	@echo "Step 4: Restarting services..."
+	@docker compose -f docker-compose.prod.yml --env-file .env.prod up -d podoru
+	@echo ""
+	@echo "Update complete. Run 'make prod-logs' to check for errors."
+
+## prod-shell: Open shell in production app container
+prod-shell:
+	@docker compose -f docker-compose.prod.yml exec podoru sh
+
+## prod-db-shell: Open PostgreSQL shell
+prod-db-shell:
+	@docker compose -f docker-compose.prod.yml exec postgres psql -U $${DB_USER:-podoru} $${DB_NAME:-podoru}
+
+## prod-clean: Remove all production data (DANGEROUS)
+prod-clean:
+	@echo "WARNING: This will remove ALL production data including the database!"
+	@read -p "Type 'DELETE' to confirm: " confirm && [ "$$confirm" = "DELETE" ] || exit 1
+	@docker compose -f docker-compose.prod.yml --env-file .env.prod down -v
+	@echo "All production data removed."
