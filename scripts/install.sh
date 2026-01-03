@@ -254,6 +254,55 @@ check_htpasswd() {
 }
 
 #######################################
+# Prompt for superadmin only (when using existing config)
+#######################################
+prompt_superadmin_only() {
+    print_header "Superadmin Account Setup"
+
+    echo -e "${CYAN}Create the superadmin account for Podoru.${NC}"
+    echo ""
+
+    read -p "Superadmin name [Administrator]: " INPUT_SUPERADMIN_NAME
+    INPUT_SUPERADMIN_NAME=${INPUT_SUPERADMIN_NAME:-Administrator}
+
+    while true; do
+        read -p "Superadmin email: " INPUT_SUPERADMIN_EMAIL
+        if [[ -z "$INPUT_SUPERADMIN_EMAIL" ]]; then
+            print_error "Email is required"
+        elif [[ ! "$INPUT_SUPERADMIN_EMAIL" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+            print_error "Invalid email format"
+        else
+            break
+        fi
+    done
+
+    while true; do
+        read -s -p "Superadmin password: " INPUT_SUPERADMIN_PASS
+        echo ""
+        if [[ -z "$INPUT_SUPERADMIN_PASS" ]]; then
+            print_error "Password is required"
+        elif [[ ${#INPUT_SUPERADMIN_PASS} -lt 8 ]]; then
+            print_error "Password must be at least 8 characters"
+        else
+            read -s -p "Confirm password: " INPUT_SUPERADMIN_PASS_CONFIRM
+            echo ""
+            if [[ "$INPUT_SUPERADMIN_PASS" != "$INPUT_SUPERADMIN_PASS_CONFIRM" ]]; then
+                print_error "Passwords do not match"
+            else
+                break
+            fi
+        fi
+    done
+
+    # Export for use in create_superadmin function
+    export SUPERADMIN_NAME="$INPUT_SUPERADMIN_NAME"
+    export SUPERADMIN_EMAIL="$INPUT_SUPERADMIN_EMAIL"
+    export SUPERADMIN_PASS="$INPUT_SUPERADMIN_PASS"
+
+    print_success "Superadmin credentials set"
+}
+
+#######################################
 # Interactive Setup Wizard
 #######################################
 run_setup_wizard() {
@@ -266,7 +315,7 @@ run_setup_wizard() {
     echo ""
 
     # Domain
-    print_step "Step 1/5: Domain Configuration"
+    print_step "Step 1/6: Domain Configuration"
     echo "Enter the domain where Podoru will be accessible."
     echo "Example: podoru.example.com, panel.myserver.com"
     echo ""
@@ -282,7 +331,7 @@ run_setup_wizard() {
     done
 
     # Email for SSL
-    print_step "Step 2/5: SSL Certificate Email"
+    print_step "Step 2/6: SSL Certificate Email"
     echo "Enter your email for Let's Encrypt SSL certificates."
     echo "You'll receive expiration notices at this address."
     echo ""
@@ -298,7 +347,7 @@ run_setup_wizard() {
     done
 
     # Admin password for Traefik dashboard
-    print_step "Step 3/5: Traefik Dashboard Credentials"
+    print_step "Step 3/6: Traefik Dashboard Credentials"
     echo "Set up credentials for the Traefik dashboard."
     echo "Dashboard URL: https://traefik.${INPUT_DOMAIN}/dashboard/"
     echo ""
@@ -331,8 +380,51 @@ run_setup_wizard() {
         TRAEFIK_AUTH="${INPUT_ADMIN_USER}:$(openssl passwd -apr1 "$INPUT_ADMIN_PASS")"
     fi
 
+    # Superadmin account
+    print_step "Step 4/6: Superadmin Account"
+    echo "Create the superadmin account for Podoru."
+    echo "This account will have full administrative access."
+    echo ""
+
+    read -p "Superadmin name [Administrator]: " INPUT_SUPERADMIN_NAME
+    INPUT_SUPERADMIN_NAME=${INPUT_SUPERADMIN_NAME:-Administrator}
+
+    while true; do
+        read -p "Superadmin email: " INPUT_SUPERADMIN_EMAIL
+        if [[ -z "$INPUT_SUPERADMIN_EMAIL" ]]; then
+            print_error "Email is required"
+        elif [[ ! "$INPUT_SUPERADMIN_EMAIL" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+            print_error "Invalid email format"
+        else
+            break
+        fi
+    done
+
+    while true; do
+        read -s -p "Superadmin password: " INPUT_SUPERADMIN_PASS
+        echo ""
+        if [[ -z "$INPUT_SUPERADMIN_PASS" ]]; then
+            print_error "Password is required"
+        elif [[ ${#INPUT_SUPERADMIN_PASS} -lt 8 ]]; then
+            print_error "Password must be at least 8 characters"
+        else
+            read -s -p "Confirm password: " INPUT_SUPERADMIN_PASS_CONFIRM
+            echo ""
+            if [[ "$INPUT_SUPERADMIN_PASS" != "$INPUT_SUPERADMIN_PASS_CONFIRM" ]]; then
+                print_error "Passwords do not match"
+            else
+                break
+            fi
+        fi
+    done
+
+    # Export for use in create_superadmin function
+    export SUPERADMIN_NAME="$INPUT_SUPERADMIN_NAME"
+    export SUPERADMIN_EMAIL="$INPUT_SUPERADMIN_EMAIL"
+    export SUPERADMIN_PASS="$INPUT_SUPERADMIN_PASS"
+
     # Database settings
-    print_step "Step 4/5: Database Configuration"
+    print_step "Step 5/6: Database Configuration"
     echo "Configure PostgreSQL database settings."
     echo ""
     read -p "Database user [podoru]: " INPUT_DB_USER
@@ -342,11 +434,12 @@ run_setup_wizard() {
     INPUT_DB_NAME=${INPUT_DB_NAME:-podoru}
 
     # Application settings
-    print_step "Step 5/5: Application Settings"
+    print_step "Step 6/6: Application Settings"
     echo "Configure application settings."
     echo ""
-    echo "Enable user registration? (First user becomes superadmin)"
-    read -p "Enable registration [y/N]: " INPUT_REGISTRATION
+    echo "Allow public user registration after setup?"
+    echo "(You can change this later in .env.prod)"
+    read -p "Enable public registration [y/N]: " INPUT_REGISTRATION
     if [[ "$INPUT_REGISTRATION" =~ ^[Yy]$ ]]; then
         REGISTRATION_ENABLED="true"
     else
@@ -405,13 +498,24 @@ EOF
 
     # Summary
     print_header "Configuration Summary"
-    echo -e "  Domain:              ${GREEN}${INPUT_DOMAIN}${NC}"
-    echo -e "  SSL Email:           ${GREEN}${INPUT_EMAIL}${NC}"
-    echo -e "  Traefik Dashboard:   ${GREEN}https://traefik.${INPUT_DOMAIN}/dashboard/${NC}"
-    echo -e "  Dashboard User:      ${GREEN}${INPUT_ADMIN_USER}${NC}"
-    echo -e "  Database User:       ${GREEN}${INPUT_DB_USER}${NC}"
-    echo -e "  Database Name:       ${GREEN}${INPUT_DB_NAME}${NC}"
-    echo -e "  Registration:        ${GREEN}${REGISTRATION_ENABLED}${NC}"
+    echo -e "  ${BOLD}Domain & SSL:${NC}"
+    echo -e "    Domain:              ${GREEN}${INPUT_DOMAIN}${NC}"
+    echo -e "    SSL Email:           ${GREEN}${INPUT_EMAIL}${NC}"
+    echo ""
+    echo -e "  ${BOLD}Superadmin Account:${NC}"
+    echo -e "    Name:                ${GREEN}${INPUT_SUPERADMIN_NAME}${NC}"
+    echo -e "    Email:               ${GREEN}${INPUT_SUPERADMIN_EMAIL}${NC}"
+    echo ""
+    echo -e "  ${BOLD}Traefik Dashboard:${NC}"
+    echo -e "    URL:                 ${GREEN}https://traefik.${INPUT_DOMAIN}/dashboard/${NC}"
+    echo -e "    Username:            ${GREEN}${INPUT_ADMIN_USER}${NC}"
+    echo ""
+    echo -e "  ${BOLD}Database:${NC}"
+    echo -e "    User:                ${GREEN}${INPUT_DB_USER}${NC}"
+    echo -e "    Name:                ${GREEN}${INPUT_DB_NAME}${NC}"
+    echo ""
+    echo -e "  ${BOLD}Settings:${NC}"
+    echo -e "    Public Registration: ${GREEN}${REGISTRATION_ENABLED}${NC}"
     echo ""
     echo -e "  ${YELLOW}Secrets have been auto-generated and saved to .env.prod${NC}"
     echo ""
@@ -551,6 +655,59 @@ wait_for_healthy() {
     return 1
 }
 
+create_superadmin() {
+    print_info "Creating superadmin account..."
+
+    # Wait a bit for the API to be fully ready
+    sleep 3
+
+    local api_url="http://localhost:8080/api/v1/auth/register"
+    local max_attempts=10
+    local attempt=1
+
+    # Prepare JSON payload
+    local payload=$(cat <<EOF
+{
+    "email": "${SUPERADMIN_EMAIL}",
+    "password": "${SUPERADMIN_PASS}",
+    "name": "${SUPERADMIN_NAME}"
+}
+EOF
+)
+
+    while [[ $attempt -le $max_attempts ]]; do
+        # Make the API request
+        local response=$(curl -s -w "\n%{http_code}" -X POST "$api_url" \
+            -H "Content-Type: application/json" \
+            -d "$payload" 2>/dev/null)
+
+        local http_code=$(echo "$response" | tail -n1)
+        local body=$(echo "$response" | sed '$d')
+
+        if [[ "$http_code" == "201" ]]; then
+            print_success "Superadmin account created successfully"
+            # Clear sensitive data
+            unset SUPERADMIN_PASS
+            return 0
+        elif [[ "$http_code" == "409" ]]; then
+            print_warning "User already exists (may be from previous installation)"
+            return 0
+        elif [[ "$http_code" == "000" ]]; then
+            # Connection refused, API not ready yet
+            echo -n "."
+            sleep 2
+            ((attempt++))
+        else
+            print_error "Failed to create superadmin (HTTP $http_code)"
+            echo "$body"
+            return 1
+        fi
+    done
+
+    print_error "API not responding after $max_attempts attempts"
+    return 1
+}
+
 show_status() {
     echo ""
     print_header "Installation Complete"
@@ -562,6 +719,20 @@ show_status() {
     docker compose -f docker-compose.prod.yml ps
 
     echo ""
+    echo -e "${GREEN}${BOLD}========================================${NC}"
+    echo -e "${GREEN}${BOLD}  SAVE THESE CREDENTIALS SECURELY!${NC}"
+    echo -e "${GREEN}${BOLD}========================================${NC}"
+    echo ""
+    echo -e "${BOLD}Superadmin Account:${NC}"
+    echo -e "  Email:    ${CYAN}${SUPERADMIN_EMAIL}${NC}"
+    echo -e "  Password: ${CYAN}(the password you entered during setup)${NC}"
+    echo ""
+    echo -e "${BOLD}Traefik Dashboard:${NC}"
+    echo -e "  URL:      ${CYAN}https://${TRAEFIK_DOMAIN:-traefik.$DOMAIN}/dashboard/${NC}"
+    echo -e "  Username: ${CYAN}(the username you entered during setup)${NC}"
+    echo ""
+    echo -e "${GREEN}${BOLD}========================================${NC}"
+    echo ""
     echo -e "${GREEN}${BOLD}Access Points:${NC}"
     echo -e "  Application:       ${CYAN}https://$DOMAIN${NC}"
     echo -e "  API Documentation: ${CYAN}https://$DOMAIN/api/v1/docs${NC}"
@@ -570,7 +741,7 @@ show_status() {
     echo -e "${GREEN}${BOLD}Next Steps:${NC}"
     echo "  1. Point your domain DNS to this server's IP address"
     echo "  2. Wait for DNS propagation (may take a few minutes)"
-    echo "  3. Access https://$DOMAIN to register the first user (becomes superadmin)"
+    echo "  3. Access https://$DOMAIN and login with your superadmin account"
     echo ""
     echo -e "${GREEN}${BOLD}Useful Commands:${NC}"
     echo "  View logs:     make prod-logs"
@@ -648,6 +819,9 @@ run_install() {
             read -p "Use existing configuration? [Y/n]: " use_existing
             if [[ "$use_existing" =~ ^[Nn]$ ]]; then
                 run_setup_wizard
+            else
+                # Still need superadmin credentials for existing config
+                prompt_superadmin_only
             fi
         else
             run_setup_wizard
@@ -671,6 +845,7 @@ run_install() {
     build_app
     start_services
     wait_for_healthy
+    create_superadmin
     show_status
 }
 
