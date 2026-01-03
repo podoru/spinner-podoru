@@ -40,9 +40,14 @@ run: build
 dev:
 	@if command -v air > /dev/null; then \
 		air; \
+	elif [ -f "$(HOME)/go/bin/air" ]; then \
+		$(HOME)/go/bin/air; \
+	elif [ -f "$(shell go env GOPATH)/bin/air" ]; then \
+		$(shell go env GOPATH)/bin/air; \
 	else \
-		echo "Air not installed. Install with: go install github.com/air-verse/air@latest"; \
-		exit 1; \
+		echo "Air not installed. Installing..."; \
+		go install github.com/air-verse/air@latest; \
+		$(HOME)/go/bin/air; \
 	fi
 
 ## test: Run tests
