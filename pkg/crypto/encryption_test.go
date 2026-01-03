@@ -3,7 +3,7 @@ package crypto_test
 import (
 	"testing"
 
-	"github.com/podoru/podoru/pkg/crypto"
+	"github.com/podoru/spinner-podoru/pkg/crypto"
 )
 
 func TestEncryptDecrypt(t *testing.T) {

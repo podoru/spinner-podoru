@@ -8,9 +8,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/podoru/podoru/internal/domain/entity"
-	"github.com/podoru/podoru/internal/domain/repository"
-	"github.com/podoru/podoru/pkg/crypto"
+	"github.com/podoru/spinner-podoru/internal/domain/entity"
+	"github.com/podoru/spinner-podoru/internal/domain/repository"
+	"github.com/podoru/spinner-podoru/pkg/crypto"
 )
 
 var (

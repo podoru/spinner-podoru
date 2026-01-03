@@ -3,7 +3,7 @@ package validator_test
 import (
 	"testing"
 
-	"github.com/podoru/podoru/pkg/validator"
+	"github.com/podoru/spinner-podoru/pkg/validator"
 )
 
 type TestStruct struct {

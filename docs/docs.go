@@ -11,7 +11,7 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "Podoru Team",
-            "url": "https://github.com/podoru/podoru"
+            "url": "https://github.com/podoru/spinner-podoru"
         },
         "license": {
             "name": "MIT",
@@ -42,7 +42,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.LoginRequest"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.LoginRequest"
                         }
                     }
                 ],
@@ -52,13 +52,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.AuthResponse"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse"
                                         }
                                     }
                                 }
@@ -68,25 +68,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "Invalid email or password",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Account is inactive",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -112,7 +112,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.RefreshRequest"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.RefreshRequest"
                         }
                     }
                 ],
@@ -123,13 +123,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -155,7 +155,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.RefreshRequest"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.RefreshRequest"
                         }
                     }
                 ],
@@ -165,13 +165,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.TokenResponse"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse"
                                         }
                                     }
                                 }
@@ -181,25 +181,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "Invalid or expired refresh token",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Account is inactive",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -225,7 +225,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.RegisterRequest"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.RegisterRequest"
                         }
                     }
                 ],
@@ -235,13 +235,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.AuthResponse"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse"
                                         }
                                     }
                                 }
@@ -251,25 +251,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Registration is disabled",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "409": {
                         "description": "Email already exists",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -296,7 +296,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
@@ -304,7 +304,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamWithRole"
+                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole"
                                             }
                                         }
                                     }
@@ -315,13 +315,13 @@ const docTemplate = `{
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -350,7 +350,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamCreate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate"
                         }
                     }
                 ],
@@ -360,13 +360,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.Team"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team"
                                         }
                                     }
                                 }
@@ -376,25 +376,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "409": {
                         "description": "Slug already exists",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -431,13 +431,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.Team"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team"
                                         }
                                     }
                                 }
@@ -447,31 +447,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid team ID",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Not a team member",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "404": {
                         "description": "Team not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -508,7 +508,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamUpdate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate"
                         }
                     }
                 ],
@@ -518,13 +518,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.Team"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team"
                                         }
                                     }
                                 }
@@ -534,31 +534,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Not a team member or insufficient permissions",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "404": {
                         "description": "Team not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -594,31 +594,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid team ID",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Not team owner",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "404": {
                         "description": "Team not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -655,7 +655,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
@@ -663,7 +663,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMember"
+                                                "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember"
                                             }
                                         }
                                     }
@@ -674,25 +674,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid team ID",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Not a team member",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -729,7 +729,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMemberCreate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate"
                         }
                     }
                 ],
@@ -739,13 +739,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMember"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember"
                                         }
                                     }
                                 }
@@ -755,37 +755,37 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Not a team member or insufficient permissions",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "404": {
                         "description": "User not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "409": {
                         "description": "User is already a team member",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -832,7 +832,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMemberUpdate"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate"
                         }
                     }
                 ],
@@ -842,13 +842,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMember"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember"
                                         }
                                     }
                                 }
@@ -858,25 +858,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Not a team member, insufficient permissions, or cannot modify owner",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -920,25 +920,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid team or user ID",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "403": {
                         "description": "Not a team member, insufficient permissions, or cannot remove owner",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -965,13 +965,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.UserResponse"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse"
                                         }
                                     }
                                 }
@@ -981,19 +981,19 @@ const docTemplate = `{
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "404": {
                         "description": "User not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -1039,13 +1039,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.UserResponse"
+                                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse"
                                         }
                                     }
                                 }
@@ -1055,25 +1055,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request body or validation error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "404": {
                         "description": "User not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -1123,25 +1123,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid request or current password incorrect",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "401": {
                         "description": "User not authenticated",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "404": {
                         "description": "User not found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Response"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response"
                         }
                     }
                 }
@@ -1149,18 +1149,18 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_podoru_podoru_internal_adapter_http_dto.AuthResponse": {
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse": {
             "type": "object",
             "properties": {
                 "tokens": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.TokenResponse"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse"
                 },
                 "user": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.UserResponse"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse"
                 }
             }
         },
-        "github_com_podoru_podoru_internal_adapter_http_dto.LoginRequest": {
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1177,7 +1177,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_adapter_http_dto.RefreshRequest": {
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.RefreshRequest": {
             "type": "object",
             "required": [
                 "refresh_token"
@@ -1189,7 +1189,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_adapter_http_dto.RegisterRequest": {
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1214,7 +1214,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_adapter_http_dto.TokenResponse": {
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse": {
             "type": "object",
             "properties": {
                 "access_token": {
@@ -1235,7 +1235,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_adapter_http_dto.UserResponse": {
+        "github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -1272,7 +1272,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.Team": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.Team": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1298,7 +1298,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.TeamCreate": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate": {
             "type": "object",
             "required": [
                 "name",
@@ -1321,7 +1321,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.TeamMember": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1331,20 +1331,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
                 },
                 "team_id": {
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.User"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.User"
                 },
                 "user_id": {
                     "type": "string"
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.TeamMemberCreate": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate": {
             "type": "object",
             "required": [
                 "email",
@@ -1361,13 +1361,13 @@ const docTemplate = `{
                     ],
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
                         }
                     ]
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.TeamMemberUpdate": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate": {
             "type": "object",
             "required": [
                 "role"
@@ -1380,13 +1380,13 @@ const docTemplate = `{
                     ],
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole"
+                            "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
                         }
                     ]
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.TeamRole": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole": {
             "type": "string",
             "enum": [
                 "owner",
@@ -1399,7 +1399,7 @@ const docTemplate = `{
                 "TeamRoleMember"
             ]
         },
-        "github_com_podoru_podoru_internal_domain_entity.TeamUpdate": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate": {
             "type": "object",
             "properties": {
                 "description": {
@@ -1413,7 +1413,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.TeamWithRole": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1432,7 +1432,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole"
                 },
                 "slug": {
                     "type": "string"
@@ -1442,7 +1442,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.User": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.User": {
             "type": "object",
             "properties": {
                 "avatar_url": {
@@ -1464,14 +1464,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_internal_domain_entity.UserRole"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.UserRole"
                 },
                 "updated_at": {
                     "type": "string"
                 }
             }
         },
-        "github_com_podoru_podoru_internal_domain_entity.UserRole": {
+        "github_com_podoru_spinner-podoru_internal_domain_entity.UserRole": {
             "type": "string",
             "enum": [
                 "superadmin",
@@ -1482,7 +1482,7 @@ const docTemplate = `{
                 "UserRoleUser"
             ]
         },
-        "github_com_podoru_podoru_pkg_response.ErrorInfo": {
+        "github_com_podoru_spinner-podoru_pkg_response.ErrorInfo": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1499,7 +1499,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_pkg_response.Meta": {
+        "github_com_podoru_spinner-podoru_pkg_response.Meta": {
             "type": "object",
             "properties": {
                 "page": {
@@ -1516,15 +1516,15 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_podoru_podoru_pkg_response.Response": {
+        "github_com_podoru_spinner-podoru_pkg_response.Response": {
             "type": "object",
             "properties": {
                 "data": {},
                 "error": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.ErrorInfo"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.ErrorInfo"
                 },
                 "meta": {
-                    "$ref": "#/definitions/github_com_podoru_podoru_pkg_response.Meta"
+                    "$ref": "#/definitions/github_com_podoru_spinner-podoru_pkg_response.Meta"
                 },
                 "success": {
                     "type": "boolean"

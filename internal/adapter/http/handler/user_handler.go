@@ -5,12 +5,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/podoru/podoru/internal/adapter/http/dto"
-	"github.com/podoru/podoru/internal/adapter/http/middleware"
-	"github.com/podoru/podoru/internal/domain/entity"
-	"github.com/podoru/podoru/internal/usecase/user"
-	"github.com/podoru/podoru/pkg/response"
-	"github.com/podoru/podoru/pkg/validator"
+	"github.com/podoru/spinner-podoru/internal/adapter/http/dto"
+	"github.com/podoru/spinner-podoru/internal/adapter/http/middleware"
+	"github.com/podoru/spinner-podoru/internal/domain/entity"
+	"github.com/podoru/spinner-podoru/internal/usecase/user"
+	"github.com/podoru/spinner-podoru/pkg/response"
+	"github.com/podoru/spinner-podoru/pkg/validator"
 )
 
 type UserHandler struct {

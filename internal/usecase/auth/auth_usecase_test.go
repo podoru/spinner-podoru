@@ -7,11 +7,11 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/podoru/podoru/internal/domain/entity"
-	"github.com/podoru/podoru/internal/infrastructure/config"
-	"github.com/podoru/podoru/internal/mocks"
-	"github.com/podoru/podoru/internal/usecase/auth"
-	"github.com/podoru/podoru/pkg/crypto"
+	"github.com/podoru/spinner-podoru/internal/domain/entity"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/config"
+	"github.com/podoru/spinner-podoru/internal/mocks"
+	"github.com/podoru/spinner-podoru/internal/usecase/auth"
+	"github.com/podoru/spinner-podoru/pkg/crypto"
 )
 
 func TestRegister_FirstUser_SuperAdmin(t *testing.T) {

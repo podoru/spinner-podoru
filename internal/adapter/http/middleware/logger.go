@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
-	"github.com/podoru/podoru/internal/infrastructure/logger"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/logger"
 )
 
 const RequestIDKey = "request_id"

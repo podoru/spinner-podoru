@@ -6,11 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
-	"github.com/podoru/podoru/internal/adapter/http/middleware"
-	"github.com/podoru/podoru/internal/domain/entity"
-	"github.com/podoru/podoru/internal/usecase/service"
-	"github.com/podoru/podoru/pkg/response"
-	"github.com/podoru/podoru/pkg/validator"
+	"github.com/podoru/spinner-podoru/internal/adapter/http/middleware"
+	"github.com/podoru/spinner-podoru/internal/domain/entity"
+	"github.com/podoru/spinner-podoru/internal/usecase/service"
+	"github.com/podoru/spinner-podoru/pkg/response"
+	"github.com/podoru/spinner-podoru/pkg/validator"
 )
 
 type ServiceHandler struct {

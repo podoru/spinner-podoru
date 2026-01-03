@@ -8,10 +8,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 
-	"github.com/podoru/podoru/internal/domain/entity"
-	"github.com/podoru/podoru/internal/domain/repository"
-	"github.com/podoru/podoru/internal/infrastructure/config"
-	"github.com/podoru/podoru/pkg/crypto"
+	"github.com/podoru/spinner-podoru/internal/domain/entity"
+	"github.com/podoru/spinner-podoru/internal/domain/repository"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/config"
+	"github.com/podoru/spinner-podoru/pkg/crypto"
 )
 
 var (

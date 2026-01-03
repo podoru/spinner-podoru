@@ -8,7 +8,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 
-	"github.com/podoru/podoru/internal/infrastructure/config"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/config"
 )
 
 type Migrator struct {

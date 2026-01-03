@@ -7,9 +7,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/podoru/podoru/internal/domain/entity"
-	"github.com/podoru/podoru/internal/mocks"
-	"github.com/podoru/podoru/internal/usecase/team"
+	"github.com/podoru/spinner-podoru/internal/domain/entity"
+	"github.com/podoru/spinner-podoru/internal/mocks"
+	"github.com/podoru/spinner-podoru/internal/usecase/team"
 )
 
 func TestCreate_Success(t *testing.T) {

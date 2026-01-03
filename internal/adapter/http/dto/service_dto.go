@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/podoru/podoru/internal/domain/entity"
+	"github.com/podoru/spinner-podoru/internal/domain/entity"
 )
 
 // ServiceResponse represents service data in API responses

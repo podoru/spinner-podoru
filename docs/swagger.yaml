@@ -1,13 +1,13 @@
 basePath: /api/v1
 definitions:
-  github_com_podoru_podoru_internal_adapter_http_dto.AuthResponse:
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse:
     properties:
       tokens:
-        $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.TokenResponse'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse'
       user:
-        $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.UserResponse'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse'
     type: object
-  github_com_podoru_podoru_internal_adapter_http_dto.LoginRequest:
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.LoginRequest:
     properties:
       email:
         example: user@example.com
@@ -19,7 +19,7 @@ definitions:
     - email
     - password
     type: object
-  github_com_podoru_podoru_internal_adapter_http_dto.RefreshRequest:
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.RefreshRequest:
     properties:
       refresh_token:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -27,7 +27,7 @@ definitions:
     required:
     - refresh_token
     type: object
-  github_com_podoru_podoru_internal_adapter_http_dto.RegisterRequest:
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.RegisterRequest:
     properties:
       email:
         example: user@example.com
@@ -46,7 +46,7 @@ definitions:
     - name
     - password
     type: object
-  github_com_podoru_podoru_internal_adapter_http_dto.TokenResponse:
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse:
     properties:
       access_token:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U
@@ -61,7 +61,7 @@ definitions:
         example: Bearer
         type: string
     type: object
-  github_com_podoru_podoru_internal_adapter_http_dto.UserResponse:
+  github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse:
     properties:
       avatar_url:
         example: https://example.com/avatar.png
@@ -88,7 +88,7 @@ definitions:
         example: "2024-01-15T10:30:00Z"
         type: string
     type: object
-  github_com_podoru_podoru_internal_domain_entity.Team:
+  github_com_podoru_spinner-podoru_internal_domain_entity.Team:
     properties:
       created_at:
         type: string
@@ -105,7 +105,7 @@ definitions:
       updated_at:
         type: string
     type: object
-  github_com_podoru_podoru_internal_domain_entity.TeamCreate:
+  github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate:
     properties:
       description:
         maxLength: 500
@@ -122,28 +122,28 @@ definitions:
     - name
     - slug
     type: object
-  github_com_podoru_podoru_internal_domain_entity.TeamMember:
+  github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember:
     properties:
       created_at:
         type: string
       id:
         type: string
       role:
-        $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
       team_id:
         type: string
       user:
-        $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.User'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.User'
       user_id:
         type: string
     type: object
-  github_com_podoru_podoru_internal_domain_entity.TeamMemberCreate:
+  github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate:
     properties:
       email:
         type: string
       role:
         allOf:
-        - $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole'
+        - $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
         enum:
         - admin
         - member
@@ -151,18 +151,18 @@ definitions:
     - email
     - role
     type: object
-  github_com_podoru_podoru_internal_domain_entity.TeamMemberUpdate:
+  github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate:
     properties:
       role:
         allOf:
-        - $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole'
+        - $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
         enum:
         - admin
         - member
     required:
     - role
     type: object
-  github_com_podoru_podoru_internal_domain_entity.TeamRole:
+  github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole:
     enum:
     - owner
     - admin
@@ -172,7 +172,7 @@ definitions:
     - TeamRoleOwner
     - TeamRoleAdmin
     - TeamRoleMember
-  github_com_podoru_podoru_internal_domain_entity.TeamUpdate:
+  github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate:
     properties:
       description:
         maxLength: 500
@@ -182,7 +182,7 @@ definitions:
         minLength: 2
         type: string
     type: object
-  github_com_podoru_podoru_internal_domain_entity.TeamWithRole:
+  github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole:
     properties:
       created_at:
         type: string
@@ -195,13 +195,13 @@ definitions:
       owner_id:
         type: string
       role:
-        $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamRole'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamRole'
       slug:
         type: string
       updated_at:
         type: string
     type: object
-  github_com_podoru_podoru_internal_domain_entity.User:
+  github_com_podoru_spinner-podoru_internal_domain_entity.User:
     properties:
       avatar_url:
         type: string
@@ -216,11 +216,11 @@ definitions:
       name:
         type: string
       role:
-        $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.UserRole'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.UserRole'
       updated_at:
         type: string
     type: object
-  github_com_podoru_podoru_internal_domain_entity.UserRole:
+  github_com_podoru_spinner-podoru_internal_domain_entity.UserRole:
     enum:
     - superadmin
     - user
@@ -228,7 +228,7 @@ definitions:
     x-enum-varnames:
     - UserRoleSuperAdmin
     - UserRoleUser
-  github_com_podoru_podoru_pkg_response.ErrorInfo:
+  github_com_podoru_spinner-podoru_pkg_response.ErrorInfo:
     properties:
       code:
         type: string
@@ -239,7 +239,7 @@ definitions:
       message:
         type: string
     type: object
-  github_com_podoru_podoru_pkg_response.Meta:
+  github_com_podoru_spinner-podoru_pkg_response.Meta:
     properties:
       page:
         type: integer
@@ -250,13 +250,13 @@ definitions:
       total_pages:
         type: integer
     type: object
-  github_com_podoru_podoru_pkg_response.Response:
+  github_com_podoru_spinner-podoru_pkg_response.Response:
     properties:
       data: {}
       error:
-        $ref: '#/definitions/github_com_podoru_podoru_pkg_response.ErrorInfo'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.ErrorInfo'
       meta:
-        $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Meta'
+        $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Meta'
       success:
         type: boolean
     type: object
@@ -264,7 +264,7 @@ host: localhost:8080
 info:
   contact:
     name: Podoru Team
-    url: https://github.com/podoru/podoru
+    url: https://github.com/podoru/spinner-podoru
   description: |-
     Podoru is a Docker container management platform similar to EasyPanel.
     It provides APIs for managing containers, services, networks, and Docker Swarm clusters.
@@ -285,7 +285,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.LoginRequest'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.LoginRequest'
       produces:
       - application/json
       responses:
@@ -293,27 +293,27 @@ paths:
           description: Login successful
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.AuthResponse'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: Invalid email or password
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Account is inactive
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       summary: Login user
       tags:
       - auth
@@ -328,7 +328,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.RefreshRequest'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.RefreshRequest'
       produces:
       - application/json
       responses:
@@ -337,11 +337,11 @@ paths:
         "400":
           description: Invalid request body
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       summary: Logout user
       tags:
       - auth
@@ -356,7 +356,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.RefreshRequest'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.RefreshRequest'
       produces:
       - application/json
       responses:
@@ -364,27 +364,27 @@ paths:
           description: Token refreshed successfully
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.TokenResponse'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.TokenResponse'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: Invalid or expired refresh token
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Account is inactive
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       summary: Refresh access token
       tags:
       - auth
@@ -399,7 +399,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.RegisterRequest'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.RegisterRequest'
       produces:
       - application/json
       responses:
@@ -407,27 +407,27 @@ paths:
           description: User registered successfully
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.AuthResponse'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.AuthResponse'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Registration is disabled
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "409":
           description: Email already exists
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       summary: Register a new user
       tags:
       - auth
@@ -441,21 +441,21 @@ paths:
           description: List of teams
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamWithRole'
+                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamWithRole'
                   type: array
               type: object
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: List teams
@@ -471,7 +471,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamCreate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamCreate'
       produces:
       - application/json
       responses:
@@ -479,27 +479,27 @@ paths:
           description: Team created
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.Team'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "409":
           description: Slug already exists
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Create team
@@ -523,23 +523,23 @@ paths:
         "400":
           description: Invalid team ID
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Not team owner
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "404":
           description: Team not found
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Delete team
@@ -561,31 +561,31 @@ paths:
           description: Team details
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.Team'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team'
               type: object
         "400":
           description: Invalid team ID
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Not a team member
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "404":
           description: Team not found
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Get team
@@ -607,7 +607,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamUpdate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamUpdate'
       produces:
       - application/json
       responses:
@@ -615,31 +615,31 @@ paths:
           description: Updated team
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.Team'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.Team'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Not a team member or insufficient permissions
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "404":
           description: Team not found
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Update team
@@ -662,29 +662,29 @@ paths:
           description: List of team members
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMember'
+                    $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember'
                   type: array
               type: object
         "400":
           description: Invalid team ID
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Not a team member
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: List team members
@@ -706,7 +706,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMemberCreate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberCreate'
       produces:
       - application/json
       responses:
@@ -714,35 +714,35 @@ paths:
           description: Member added
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMember'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Not a team member or insufficient permissions
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "404":
           description: User not found
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "409":
           description: User is already a team member
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Add team member
@@ -772,20 +772,20 @@ paths:
         "400":
           description: Invalid team or user ID
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Not a team member, insufficient permissions, or cannot remove
             owner
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Remove team member
@@ -813,7 +813,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMemberUpdate'
+          $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMemberUpdate'
       produces:
       - application/json
       responses:
@@ -821,28 +821,28 @@ paths:
           description: Updated member
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_domain_entity.TeamMember'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_domain_entity.TeamMember'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "403":
           description: Not a team member, insufficient permissions, or cannot modify
             owner
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Update team member
@@ -858,23 +858,23 @@ paths:
           description: User profile
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.UserResponse'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse'
               type: object
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "404":
           description: User not found
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Get current user
@@ -902,27 +902,27 @@ paths:
           description: Updated user profile
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            - $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_podoru_podoru_internal_adapter_http_dto.UserResponse'
+                  $ref: '#/definitions/github_com_podoru_spinner-podoru_internal_adapter_http_dto.UserResponse'
               type: object
         "400":
           description: Invalid request body or validation error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "404":
           description: User not found
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Update current user
@@ -953,19 +953,19 @@ paths:
         "400":
           description: Invalid request or current password incorrect
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "401":
           description: User not authenticated
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "404":
           description: User not found
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/github_com_podoru_podoru_pkg_response.Response'
+            $ref: '#/definitions/github_com_podoru_spinner-podoru_pkg_response.Response'
       security:
       - BearerAuth: []
       summary: Update password

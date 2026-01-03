@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/podoru/podoru/internal/infrastructure/config"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/config"
 )
 
 type Logger struct {

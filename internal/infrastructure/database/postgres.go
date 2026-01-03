@@ -7,7 +7,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/podoru/podoru/internal/infrastructure/config"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/config"
 )
 
 type Database struct {

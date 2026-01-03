@@ -3,9 +3,9 @@ package http
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/podoru/podoru/internal/adapter/http/handler"
-	"github.com/podoru/podoru/internal/adapter/http/middleware"
-	"github.com/podoru/podoru/internal/infrastructure/logger"
+	"github.com/podoru/spinner-podoru/internal/adapter/http/handler"
+	"github.com/podoru/spinner-podoru/internal/adapter/http/middleware"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/logger"
 )
 
 type Router struct {

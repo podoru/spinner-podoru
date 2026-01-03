@@ -8,7 +8,7 @@
 //	@description				It provides APIs for managing containers, services, networks, and Docker Swarm clusters.
 //
 //	@contact.name				Podoru Team
-//	@contact.url				https://github.com/podoru/podoru
+//	@contact.url				https://github.com/podoru/spinner-podoru
 //
 //	@license.name				MIT
 //	@license.url				https://opensource.org/licenses/MIT

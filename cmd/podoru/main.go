@@ -6,7 +6,7 @@
 //	@description				It provides APIs for managing containers, services, networks, and Docker Swarm clusters.
 //
 //	@contact.name				Podoru Team
-//	@contact.url				https://github.com/podoru/podoru
+//	@contact.url				https://github.com/podoru/spinner-podoru
 //
 //	@license.name				MIT
 //	@license.url				https://opensource.org/licenses/MIT
@@ -30,20 +30,20 @@ import (
 	"syscall"
 	"time"
 
-	httpAdapter "github.com/podoru/podoru/internal/adapter/http"
-	"github.com/podoru/podoru/internal/adapter/http/handler"
-	"github.com/podoru/podoru/internal/adapter/http/middleware"
-	"github.com/podoru/podoru/internal/adapter/repository/postgres"
-	"github.com/podoru/podoru/internal/infrastructure/config"
-	"github.com/podoru/podoru/internal/infrastructure/database"
-	"github.com/podoru/podoru/internal/infrastructure/logger"
-	"github.com/podoru/podoru/internal/usecase/auth"
-	"github.com/podoru/podoru/internal/usecase/project"
-	"github.com/podoru/podoru/internal/usecase/service"
-	"github.com/podoru/podoru/internal/usecase/team"
-	"github.com/podoru/podoru/internal/usecase/user"
-	"github.com/podoru/podoru/pkg/crypto"
-	"github.com/podoru/podoru/pkg/validator"
+	httpAdapter "github.com/podoru/spinner-podoru/internal/adapter/http"
+	"github.com/podoru/spinner-podoru/internal/adapter/http/handler"
+	"github.com/podoru/spinner-podoru/internal/adapter/http/middleware"
+	"github.com/podoru/spinner-podoru/internal/adapter/repository/postgres"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/config"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/database"
+	"github.com/podoru/spinner-podoru/internal/infrastructure/logger"
+	"github.com/podoru/spinner-podoru/internal/usecase/auth"
+	"github.com/podoru/spinner-podoru/internal/usecase/project"
+	"github.com/podoru/spinner-podoru/internal/usecase/service"
+	"github.com/podoru/spinner-podoru/internal/usecase/team"
+	"github.com/podoru/spinner-podoru/internal/usecase/user"
+	"github.com/podoru/spinner-podoru/pkg/crypto"
+	"github.com/podoru/spinner-podoru/pkg/validator"
 )
 
 const (
