@@ -1,4 +1,5 @@
 .PHONY: build run dev test clean lint migrate-up migrate-down docker-up docker-down docs help \
+	dev-setup dev-check dev-quick dev-reset \
 	prod-check prod-install prod-setup prod-up prod-down prod-logs prod-restart prod-backup prod-update prod-secrets
 
 BINARY_NAME=podoru
@@ -139,11 +140,35 @@ docker-push:
 	@docker tag $(BINARY_NAME):$(VERSION) $(REGISTRY)/$(BINARY_NAME):$(VERSION)
 	@docker push $(REGISTRY)/$(BINARY_NAME):$(VERSION)
 
-## setup: Initial project setup
+## setup: Initial project setup (legacy, use dev-setup instead)
 setup: deps
 	@echo "Setting up project..."
 	@cp -n .env.example .env 2>/dev/null || true
 	@echo "Setup complete. Edit .env file with your configuration."
+
+# =============================================================================
+# Development Setup Commands
+# =============================================================================
+
+## dev-setup: Full development environment setup (recommended for first-time setup)
+dev-setup:
+	@chmod +x scripts/dev-setup.sh
+	@./scripts/dev-setup.sh setup
+
+## dev-check: Check development prerequisites
+dev-check:
+	@chmod +x scripts/dev-setup.sh
+	@./scripts/dev-setup.sh check
+
+## dev-quick: Quick start development (database + hot reload)
+dev-quick:
+	@chmod +x scripts/dev-setup.sh
+	@./scripts/dev-setup.sh quick
+
+## dev-reset: Reset development environment (removes data)
+dev-reset:
+	@chmod +x scripts/dev-setup.sh
+	@./scripts/dev-setup.sh reset
 
 ## docs: Generate API documentation (Swagger/OpenAPI)
 docs:
