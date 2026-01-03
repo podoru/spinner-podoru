@@ -1,0 +1,88 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: podoru_postgres
+    environment:
+      POSTGRES_USER: podoru
+      POSTGRES_PASSWORD: podoru_secret
+      POSTGRES_DB: podoru
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U podoru -d podoru"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - podoru_network
+
+  traefik:
+    image: traefik:v3.2
+    container_name: podoru_traefik
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=podoru_traefik"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--log.level=INFO"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8081:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_data:/etc/traefik
+    networks:
+      - podoru_traefik
+      - podoru_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+
+  podoru:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: podoru_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - APP_ENV=development
+      - APP_PORT=8080
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=podoru
+      - DB_PASSWORD=podoru_secret
+      - DB_NAME=podoru
+      - DB_SSL_MODE=disable
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - podoru_network
+      - podoru_traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.podoru.rule=Host(`podoru.localhost`)"
+      - "traefik.http.routers.podoru.entrypoints=web"
+      - "traefik.http.services.podoru.loadbalancer.server.port=8080"
+
+volumes:
+  postgres_data:
+  traefik_data:
+
+networks:
+  podoru_network:
+    driver: bridge
+  podoru_traefik:
+    driver: bridge
+    name: podoru_traefik
