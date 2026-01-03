@@ -8,9 +8,9 @@ app:
 database:
   host: localhost
   port: 5432
-  user: minipod
-  password: minipod_secret
-  name: minipod
+  user: podoru
+  password: podoru_secret
+  name: podoru
   ssl_mode: disable
   max_open_conns: 25
   max_idle_conns: 5
