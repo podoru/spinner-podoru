@@ -1,6 +1,8 @@
 .PHONY: build run dev test clean lint migrate-up migrate-down docker-up docker-down docs help \
 	dev-setup dev-check dev-quick dev-reset \
-	prod-check prod-install prod-setup prod-up prod-down prod-logs prod-restart prod-backup prod-update prod-secrets
+	prod-check prod-install prod-setup prod-up prod-down prod-logs prod-restart prod-backup prod-update prod-secrets \
+	frontend-install frontend-dev frontend-build frontend-lint frontend-preview frontend-clean \
+	dev-all prod-build-all
 
 BINARY_NAME=podoru
 BUILD_DIR=bin
@@ -9,6 +11,9 @@ MAIN_PATH=./cmd/podoru
 # Go related variables
 GOBASE=$(shell pwd)
 GOBIN=$(GOBASE)/$(BUILD_DIR)
+
+# Docker Compose command detection (supports both standalone and plugin)
+DOCKER_COMPOSE := $(shell if command -v docker-compose > /dev/null 2>&1; then echo "docker-compose"; elif docker compose version > /dev/null 2>&1; then echo "docker compose"; else echo "docker-compose"; fi)
 
 # Build info
 VERSION?=0.1.0
@@ -53,13 +58,13 @@ dev:
 ## dev-traefik: Start Traefik for local development
 dev-traefik:
 	@echo "Starting Traefik..."
-	@docker-compose up -d traefik
+	@$(DOCKER_COMPOSE) up -d traefik
 	@echo "Traefik started. Dashboard: http://localhost:8081"
 
 ## dev-full: Start full development environment (database + traefik + hot reload)
 dev-full:
 	@echo "Starting full development environment..."
-	@docker-compose up -d postgres traefik
+	@$(DOCKER_COMPOSE) up -d postgres traefik
 	@echo "Waiting for services..."
 	@sleep 3
 	@echo "Starting application with hot reload..."
@@ -132,18 +137,18 @@ migrate-create:
 ## docker-up: Start Docker Compose services
 docker-up:
 	@echo "Starting Docker services..."
-	@docker compose up -d
+	@$(DOCKER_COMPOSE) up -d
 	@echo "Services started"
 
 ## docker-down: Stop Docker Compose services
 docker-down:
 	@echo "Stopping Docker services..."
-	@docker compose down
+	@$(DOCKER_COMPOSE) down
 	@echo "Services stopped"
 
 ## docker-logs: Show Docker Compose logs
 docker-logs:
-	@docker compose logs -f
+	@$(DOCKER_COMPOSE) logs -f
 
 ## docker-build: Build Docker image
 docker-build:
@@ -244,39 +249,39 @@ prod-setup:
 ## prod-up: Start production services
 prod-up:
 	@echo "Starting production services..."
-	@docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml --env-file .env.prod up -d
 	@echo "Services started. Run 'make prod-logs' to view logs."
 
 ## prod-down: Stop production services
 prod-down:
 	@echo "Stopping production services..."
-	@docker compose -f docker-compose.prod.yml --env-file .env.prod down
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml --env-file .env.prod down
 	@echo "Services stopped."
 
 ## prod-restart: Restart production services
 prod-restart:
 	@echo "Restarting production services..."
-	@docker compose -f docker-compose.prod.yml --env-file .env.prod restart
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml --env-file .env.prod restart
 	@echo "Services restarted."
 
 ## prod-logs: View production logs (follow mode)
 prod-logs:
-	@docker compose -f docker-compose.prod.yml logs -f
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml logs -f
 
 ## prod-status: Show production services status
 prod-status:
 	@echo "Production Services Status:"
 	@echo "============================"
-	@docker compose -f docker-compose.prod.yml ps
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml ps
 	@echo ""
 	@echo "Resource Usage:"
-	@docker stats --no-stream $$(docker compose -f docker-compose.prod.yml ps -q) 2>/dev/null || true
+	@docker stats --no-stream $$($(DOCKER_COMPOSE) -f docker-compose.prod.yml ps -q) 2>/dev/null || true
 
 ## prod-backup: Backup PostgreSQL database
 prod-backup:
 	@echo "Creating database backup..."
 	@mkdir -p backups
-	@docker compose -f docker-compose.prod.yml exec -T postgres pg_dump -U $${DB_USER:-podoru} $${DB_NAME:-podoru} | gzip > backups/podoru_$$(date +%Y%m%d_%H%M%S).sql.gz
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml exec -T postgres pg_dump -U $${DB_USER:-podoru} $${DB_NAME:-podoru} | gzip > backups/podoru_$$(date +%Y%m%d_%H%M%S).sql.gz
 	@echo "Backup created: backups/podoru_$$(date +%Y%m%d_%H%M%S).sql.gz"
 	@ls -lh backups/*.sql.gz | tail -5
 
@@ -290,7 +295,7 @@ prod-restore:
 	fi
 	@echo "Restoring database from $(file)..."
 	@read -p "This will overwrite the current database. Continue? [y/N] " confirm && [ "$$confirm" = "y" ] || exit 1
-	@gunzip -c $(file) | docker compose -f docker-compose.prod.yml exec -T postgres psql -U $${DB_USER:-podoru} $${DB_NAME:-podoru}
+	@gunzip -c $(file) | $(DOCKER_COMPOSE) -f docker-compose.prod.yml exec -T postgres psql -U $${DB_USER:-podoru} $${DB_NAME:-podoru}
 	@echo "Database restored."
 
 ## prod-update: Update production to latest version
@@ -304,24 +309,140 @@ prod-update:
 	@git pull origin master
 	@echo ""
 	@echo "Step 3: Rebuilding application..."
-	@docker compose -f docker-compose.prod.yml --env-file .env.prod build --no-cache podoru
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml --env-file .env.prod build --no-cache podoru
 	@echo ""
 	@echo "Step 4: Restarting services..."
-	@docker compose -f docker-compose.prod.yml --env-file .env.prod up -d podoru
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml --env-file .env.prod up -d podoru
 	@echo ""
 	@echo "Update complete. Run 'make prod-logs' to check for errors."
 
 ## prod-shell: Open shell in production app container
 prod-shell:
-	@docker compose -f docker-compose.prod.yml exec podoru sh
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml exec podoru sh
 
 ## prod-db-shell: Open PostgreSQL shell
 prod-db-shell:
-	@docker compose -f docker-compose.prod.yml exec postgres psql -U $${DB_USER:-podoru} $${DB_NAME:-podoru}
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml exec postgres psql -U $${DB_USER:-podoru} $${DB_NAME:-podoru}
 
 ## prod-clean: Remove all production data (DANGEROUS)
 prod-clean:
 	@echo "WARNING: This will remove ALL production data including the database!"
 	@read -p "Type 'DELETE' to confirm: " confirm && [ "$$confirm" = "DELETE" ] || exit 1
-	@docker compose -f docker-compose.prod.yml --env-file .env.prod down -v
+	@$(DOCKER_COMPOSE) -f docker-compose.prod.yml --env-file .env.prod down -v
 	@echo "All production data removed."
+
+# =============================================================================
+# Frontend Commands
+# =============================================================================
+
+FRONTEND_DIR=frontend
+
+## frontend-install: Install frontend dependencies
+frontend-install:
+	@echo "Installing frontend dependencies..."
+	@cd $(FRONTEND_DIR) && npm install
+	@echo "Frontend dependencies installed."
+
+## frontend-dev: Start frontend development server
+frontend-dev:
+	@echo "Starting frontend development server on http://localhost:3000..."
+	@cd $(FRONTEND_DIR) && npm run dev
+
+## frontend-build: Build frontend for production
+frontend-build:
+	@echo "Building frontend for production..."
+	@cd $(FRONTEND_DIR) && npm run build
+	@echo "Frontend built. Output in $(FRONTEND_DIR)/dist/"
+
+## frontend-lint: Lint frontend code
+frontend-lint:
+	@echo "Linting frontend code..."
+	@cd $(FRONTEND_DIR) && npm run lint
+	@echo "Linting complete."
+
+## frontend-preview: Preview production build locally
+frontend-preview:
+	@echo "Starting frontend preview server..."
+	@cd $(FRONTEND_DIR) && npm run preview
+
+## frontend-clean: Clean frontend build artifacts
+frontend-clean:
+	@echo "Cleaning frontend build artifacts..."
+	@rm -rf $(FRONTEND_DIR)/dist $(FRONTEND_DIR)/node_modules/.vite
+	@echo "Frontend cleaned."
+
+## frontend-setup: Setup frontend environment (copy .env.example)
+frontend-setup:
+	@echo "Setting up frontend environment..."
+	@cd $(FRONTEND_DIR) && cp -n .env.example .env 2>/dev/null || true
+	@echo "Frontend environment setup complete."
+
+# =============================================================================
+# Combined Development Commands
+# =============================================================================
+
+## dev-all: Start full-stack development (backend + frontend + database)
+dev-all:
+	@echo "Starting full-stack development environment..."
+	@echo ""
+	@echo "Step 1: Starting database and Traefik..."
+	@$(DOCKER_COMPOSE) up -d postgres traefik
+	@sleep 2
+	@echo ""
+	@echo "Step 2: Starting backend (in background)..."
+	@$(MAKE) dev &
+	@sleep 3
+	@echo ""
+	@echo "Step 3: Starting frontend..."
+	@echo ""
+	@echo "============================================"
+	@echo "  Backend:  http://localhost:8080"
+	@echo "  Frontend: http://localhost:3000"
+	@echo "  Traefik:  http://localhost:8081"
+	@echo "============================================"
+	@echo ""
+	@cd $(FRONTEND_DIR) && npm run dev
+
+## install-all: Install all dependencies (backend + frontend)
+install-all:
+	@echo "Installing all dependencies..."
+	@echo ""
+	@echo "Step 1: Backend dependencies..."
+	@go mod download
+	@echo ""
+	@echo "Step 2: Frontend dependencies..."
+	@cd $(FRONTEND_DIR) && npm install
+	@echo ""
+	@echo "All dependencies installed."
+
+## setup-all: Full project setup (backend + frontend)
+setup-all:
+	@echo "Setting up full project..."
+	@echo ""
+	@echo "Step 1: Backend setup..."
+	@cp -n .env.example .env 2>/dev/null || true
+	@go mod download
+	@echo ""
+	@echo "Step 2: Frontend setup..."
+	@cd $(FRONTEND_DIR) && cp -n .env.example .env 2>/dev/null || true
+	@cd $(FRONTEND_DIR) && npm install
+	@echo ""
+	@echo "Setup complete! Run 'make dev-all' to start development."
+
+# =============================================================================
+# Production Build Commands
+# =============================================================================
+
+## prod-build-all: Build both backend and frontend for production
+prod-build-all: frontend-build build
+	@echo ""
+	@echo "Production build complete."
+	@echo "  - Backend:  $(BUILD_DIR)/$(BINARY_NAME)"
+	@echo "  - Frontend: $(FRONTEND_DIR)/dist/"
+
+## prod-build-frontend: Build frontend and copy to static directory for serving
+prod-build-frontend: frontend-build
+	@echo "Copying frontend build to static directory..."
+	@mkdir -p static
+	@cp -r $(FRONTEND_DIR)/dist/* static/
+	@echo "Frontend ready for production serving from static/"
